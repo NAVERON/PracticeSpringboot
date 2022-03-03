@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<!-- 使用log4j2 类似的， 去除 starter-web的  logging，  添加log4j2的依赖， resource目录添加log4j2-springboot.xml 写法类似logback -->
+<!-- %d{HH:mm:ss.SSS} – a timestamp with hours, minutes, seconds and milliseconds -->
+<!-- [%thread] – the thread name generating the log message, surrounded by square brackets -->
+<!-- %-5level – the level of the logging event, padded to 5 characters -->
+<!-- %logger{36} – the name of the logger, truncated to 35 characters -->
+<!-- %msg%n – the log messages followed by the platform dependent line separator character -->
+
+<configuration>
+
+    <!-- 公共参数属性 -->
+    <property name = "LOG_PATH" value = "logs"></property>
+    
+    <!-- 定义appender，输出Terminal 或者 File -->
+    <appender name = "STDOUT" class = "ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>  <!-- 可彩色显示， 但是测试没有作用， 可能跟输出平台有关， terminal输出会是正确的 --> 
+        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} %n- %msg%n  <!-- 只有支持高亮的终端才会彩色显示, eclipse不能  %n可以回车 -->
+            </pattern>
+        </layout>
+    </appender>
+    
+    <appender name = "FILE" class = "ch.qos.logback.core.rolling.RollingFileAppender"> 
+        <file>${LOG_PATH}/spring-boot-logger.log</file>
+        <encoder>
+            <pattern>
+                %date %level [%thread] %logger{36} [%file : %line] %msg%n
+            </pattern> 
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
+            <fileNamePattern>
+                ${LOG_PATH}/archived/springbootlogger-%d{yyyy-MM-dd}.%i.zip 
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"> 
+                <maxFileSize>10MB</maxFileSize> 
+            </timeBasedFileNamingAndTriggeringPolicy> 
+        </rollingPolicy>
+    </appender> 
+
+    <!-- 对不同的 spring profile 使用不同的日志配置 -->
+    <springProfile name = "dev">
+    
+        <!-- 自定义日志方式, 对某个包或类单独定义appender -->
+        <logger name = "com.eron.practice.api" level = "INFO" additivity = "false">
+            <appender-ref ref = "FILE"></appender-ref> 
+        </logger>
+    
+        <root level = "DEBUG">
+            <appender-ref ref = "STDOUT"></appender-ref>
+        </root>
+    </springProfile>
+    
+    <springProfile name = "prod">
+    
+	    <root level = "DEBUG">
+	        <appender-ref ref = "STDOUT"></appender-ref>
+	    </root>
+    </springProfile>
+
+</configuration>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

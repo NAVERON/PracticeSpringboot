@@ -22,7 +22,7 @@ public class Ship implements Cloneable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "id", updatable = false, nullable = false)
     private Long id; // 自动生成的id 
 	@Column(name = "user_id")
 	private Long userId; // 用户ID @See User  **必须赋值** 
@@ -188,6 +188,13 @@ public class Ship implements Cloneable {
 
 	public void setUpdateTime(LocalDateTime updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	@Override
+	public String toString() {
+		return "Ship [id=" + id + ", userId=" + userId + ", name=" + name + ", mmsi=" + mmsi + ", imoNumber="
+				+ imoNumber + ", callNumber=" + callNumber + ", type=" + type + ", electronicType=" + electronicType
+				+ ", draft=" + draft + ", createTime=" + createTime + ", updateTime=" + updateTime + "]";
 	}
 	
 }

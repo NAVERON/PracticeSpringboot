@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eron.practice.model.ResponseEntity;
 import com.eron.practice.model.User;
 import com.eron.practice.service.UserService;
+import com.eron.practice.utils.ResponseUtils;
 
 @RestController
 @RequestMapping(value = "api/v1")
@@ -25,38 +27,46 @@ public class UserManagerApi {
 	
 	private static final Logger log = LoggerFactory.getLogger(UserManagerApi.class);
 	
+	private final ThreadLocal<String> tesThreadLocal = new ThreadLocal<>();  // 多线程场景下公共变量的使用 
+	
 	@Resource
 	// @Qualifier // 以后如果有其他的实现, 补充空值为设定值 
 	private UserService userService; 
 
 	@GetMapping(value = "users")
-	public List<User> all() {  // 获取局所有用户 
+	public ResponseEntity<Object> all() {  // 获取局所有用户 
 		List<User> all = userService.all();
 		log.info("all user : {}", all);
-		return all;
+		return ResponseUtils.success(all);
 	}
 	
 	@GetMapping(value = "users/{id}")
-	public User one(@PathVariable(value = "id") Long id) {  // 获取单个登陆用户 
+	public ResponseEntity<Object> one(@PathVariable(value = "id") Long id) {  // 获取单个登陆用户 
 		User one = userService.oneByID(id);
 		log.error("print one {}", one);
 		
-		return one;
+		return ResponseUtils.success(one);
 	}
 	
 	@PostMapping(value = "users")
-	public User newUser(@RequestBody User user) {  // 注册新用户 
-		return userService.newUser(user);
+	public ResponseEntity<Object> newUser(@RequestBody User user) {  // 注册新用户 
+		User newUser =  userService.newUser(user);
+		
+		return ResponseUtils.success(newUser);
 	}
 	
 	@DeleteMapping(value = "users/{id}")
-	public void deleteUser(@PathVariable(value = "id") Long id) {  // 删除单个用户 
+	public ResponseEntity<Object> deleteUser(@PathVariable(value = "id") Long id) {  // 删除单个用户 
 		userService.deleteUser(id);
+		
+		return ResponseUtils.success();
 	}
 	
 	@PutMapping(value = "users/{id}")
-	public User modifyUser(@PathVariable(value = "id") Long id, @RequestBody User user) {  // 根据id修改用户属性 
-		return userService.modifyUser(id, user);
+	public ResponseEntity<Object> modifyUser(@PathVariable(value = "id") Long id, @RequestBody User user) {  // 根据id修改用户属性 
+		User updatedUser =  userService.modifyUser(id, user);
+		
+		return ResponseUtils.success(updatedUser);
 	}
 	
 }

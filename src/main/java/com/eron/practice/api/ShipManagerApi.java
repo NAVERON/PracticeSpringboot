@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eron.practice.model.ResponseEntity;
 import com.eron.practice.model.Ship;
 import com.eron.practice.service.ShipService;
+import com.eron.practice.utils.ResponseUtils;
+
+
 
 @RestController // = Controller ResponseBody (json化)
 @RequestMapping(value = "api/v1")
@@ -30,33 +34,45 @@ public class ShipManagerApi {
 	private ShipService shipService;
 
 	@GetMapping(value = "ships")
-	public List<Ship> all(){
-		return shipService.all();
+	public ResponseEntity<Object> all(){
+		List<Ship> all = shipService.all();
+		
+		return ResponseUtils.success(all);
 	}
 	
 	@GetMapping(value = "ships/{userId}")
-	public List<Ship> shipsOfUserID(@PathVariable(value = "userId") Long userId) {
-		return shipService.shipsOfUserID(userId);
+	public ResponseEntity<Object> shipsOfUser(@PathVariable(value = "userId") Long userId) {
+		List<Ship> shipsOfUser = shipService.shipsOfUser(userId);
+		
+		return ResponseUtils.success(shipsOfUser);
 	}
 	
 	@GetMapping(value = "ships/{userId}/{shipId}")
-	public Ship shipOfUserID(@PathVariable(value = "userId") Long userId, @PathVariable(value = "shipId") Long shipId) {
-		return shipService.shipOfUserID(userId, shipId);
+	public ResponseEntity<Object> shipOfUser(@PathVariable(value = "userId") Long userId, @PathVariable(value = "shipId") Long shipId) {
+		Ship shipOfUserShip = shipService.shipOfUser(userId, shipId);
+		
+		return ResponseUtils.success(shipOfUserShip);
 	}
 	
 	@PostMapping(value = "ships/{userId}")
-	public Ship newShipOfUserID(@PathVariable(value = "userId") Long userId, @RequestBody Ship ship) {
-		return shipService.newShipOfUserID(userId, ship);
+	public ResponseEntity<Object> newShipOfUser(@PathVariable(value = "userId") Long userId, @RequestBody Ship ship) {
+		Ship newShip =  shipService.newShipOfUser(userId, ship);
+		
+		return ResponseUtils.success(newShip);
 	}
 	
 	@DeleteMapping(value = "ships/{userId}/{shipId}")
-	public void deleteShipOfUserID(@PathVariable(value = "userId") Long userId, @PathVariable(value = "shipId") Long shipId) {
-		shipService.deleteShipOfUserID(userId, shipId);
+	public ResponseEntity<Object> deleteShipOfUser(@PathVariable(value = "userId") Long userId, @PathVariable(value = "shipId") Long shipId) {
+		shipService.deleteShipOfUser(userId, shipId);
+		
+		return ResponseUtils.success();
 	}
 	
 	@PutMapping(value = "ships/{userId}")
-	public Ship modifyShipOfUserID(@PathVariable(value = "userId") Long userId, @RequestBody Ship ship) {
-		return shipService.modifyShipOfUserID(userId, ship);
+	public ResponseEntity<Object> modifyShipOfUser(@PathVariable(value = "userId") Long userId, @RequestBody Ship ship) {
+		Ship updatedShip =  shipService.modifyShipOfUser(userId, ship);
+		
+		return ResponseUtils.success(updatedShip);
 	}
 	
 }

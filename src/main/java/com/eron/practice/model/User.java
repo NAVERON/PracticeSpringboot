@@ -130,7 +130,15 @@ public class User implements Cloneable {
 	public void setUpdateTime(LocalDateTime updateTime) {
 		this.updateTime = updateTime;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "[" 
+				+ "id: " + id + ", name: " + name 
+				+ ", password: " + password + ", registEmail: " + registEmail 
+				+ ", createTime: " + createTime + ", updateTime: " + updateTime 
+				+ "]";
+	}
 	
 }
 

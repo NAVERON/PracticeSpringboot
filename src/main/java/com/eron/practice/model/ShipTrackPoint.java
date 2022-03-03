@@ -12,16 +12,19 @@ import javax.persistence.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+
 @Entity
 @Table(name = "ship_track_point") 
 public class ShipTrackPoint implements Cloneable { 
 
 	private static final Logger log = LoggerFactory.getLogger(ShipTrackPoint.class);
     
+	// 不需要column注解的情况是 使用大小驼峰命名 如 a_b -> 对象 aB 属性 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id") // 不需要column注解的情况是 使用大小驼峰命名 如 a_b -> 对象 aB 属性
-    private Long id; // 自增主键 
+	@Column(name = "id", updatable = false, nullable = false)
+    private Long id; // 自增主键  
 	@Column(name = "ship_id")
 	private Long shipId; // 船舶id @See Ship  必须赋值 
 	@Column(name = "rotation_acceleration")
@@ -179,7 +182,14 @@ public class ShipTrackPoint implements Cloneable {
 	public void setCreateTime(LocalDateTime createTime) {
 		this.createTime = createTime;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "ShipTrackPoint [id=" + id + ", shipId=" + shipId + ", rotationAcceleration=" + rotationAcceleration
+				+ ", sogSpeed=" + sogSpeed + ", cogCource=" + cogCource + ", speed=" + speed + ", cource=" + cource
+				+ ", rudder=" + rudder + ", longitude=" + longitude + ", latitude=" + latitude + ", createTime="
+				+ createTime + "]";
+	}
 	
 	
 }

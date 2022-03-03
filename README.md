@@ -35,6 +35,7 @@
 2. jpa Converter 转换 localateime/ localdate 在新版本JPA中可能已经实现, 不需要手动处理  
 3. 定义api的时候 需要注意接口重复, 所以一般在同一个api类中最好使用不同的前缀  
 4. resource docs目录下存放自定义脚本  
+5. jpa 自定义query的使用, 删除语句返回删除数据的表示, 重写deleteById 方法等. 自定义一种按照java对象查询, 另一种使用nativeuery = true 直接写SQL  
 
 
 

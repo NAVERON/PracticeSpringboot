@@ -25,19 +25,19 @@ public class ShipTrackServiceImpl implements ShipTrackService {
 
 	@Override
 	public ShipTrackPoint addTrackPointsToShip(Long shipId, ShipTrackPoint shipTrackPoint) {
-		return null;
+		shipTrackPoint.setShipId(shipId);
+		
+		return shipTrackPointDAO.save(shipTrackPoint);
 	}
 
 	@Override
 	public List<ShipTrackPoint> trackPointsOfShip(Long shipId) {
-		// TODO Auto-generated method stub
-		return null;
+		return shipTrackPointDAO.findTrackPointsOfShip(shipId);
 	}
 
 	@Override
 	public void deleteAllTracksOfShip(Long shipId) {
-		// TODO Auto-generated method stub
-		
+		shipTrackPointDAO.deleteAllTracksOfShip(shipId);
 	}
 
 }

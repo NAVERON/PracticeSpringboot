@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eron.practice.model.ResponseEntity;
 import com.eron.practice.model.ShipTrackPoint;
 import com.eron.practice.service.ShipTrackService;
+import com.eron.practice.utils.ResponseUtils;
 
 
 
@@ -31,18 +33,24 @@ public class ShipTrackRecorderApi {
 	private ShipTrackService shipTrackService;
 
 	@GetMapping(value = "shiptracks/{shipId}")
-	public List<ShipTrackPoint> trackPointsByShipID(@PathVariable(value = "shipId") Long shipId){
-		return shipTrackService.trackPointsOfShip(shipId);
+	public ResponseEntity<Object> trackPointsByShipID(@PathVariable(value = "shipId") Long shipId){
+		List<ShipTrackPoint> tracksOfShipTrackPoints = shipTrackService.trackPointsOfShip(shipId);
+		
+		return ResponseUtils.success(tracksOfShipTrackPoints);
 	}
 	
 	@PostMapping(value = "shiptracks/{shipId}")
-	public ShipTrackPoint addTrackToShip(@PathVariable(value = "shipId") Long shipId, @RequestBody ShipTrackPoint shipTrackPoint) {
-		return shipTrackService.addTrackPointsToShip(shipId, shipTrackPoint);
+	public ResponseEntity<Object> addTrackToShip(@PathVariable(value = "shipId") Long shipId, @RequestBody ShipTrackPoint shipTrackPoint) {
+		ShipTrackPoint newTrackPoint = shipTrackService.addTrackPointsToShip(shipId, shipTrackPoint);
+		
+		return ResponseUtils.success(newTrackPoint);
 	}
 	
 	@DeleteMapping(value = "shiptracks/{shipId}")
-	public void deleteAllTracksOfShip(@PathVariable(value = "shipid") Long shipId) {
+	public ResponseEntity<Object> deleteAllTracksOfShip(@PathVariable(value = "shipid") Long shipId) {
 		shipTrackService.deleteAllTracksOfShip(shipId);
+		
+		return ResponseUtils.success();
 	}
 	
 }

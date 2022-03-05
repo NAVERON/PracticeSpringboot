@@ -1,6 +1,7 @@
 package com.eron.practice.api;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,6 +34,14 @@ public class UserManagerApi {
 	@Resource
 	// @Qualifier // 以后如果有其他的实现, 补充空值为设定值 
 	private UserService userService; 
+	
+	@GetMapping(value = "test")
+	public ResponseEntity<Object> test(@ModelAttribute(value = "custome") Map<String, String> custome) {
+		
+		// 测试在 ApiControllerAdvice 中 model attribude 自定义属性
+		
+		return ResponseUtils.success();
+	}
 
 	@GetMapping(value = "users")
 	public ResponseEntity<Object> all() {  // 获取局所有用户 

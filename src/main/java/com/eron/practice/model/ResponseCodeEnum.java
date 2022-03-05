@@ -7,6 +7,7 @@ public enum ResponseCodeEnum {
 	ERROR_400(400, "请求错误"), 
 	ERROR_404(404, "资源不存在"), 
 	ERROR_500(500, "服务器异常");
+	// 更多业务编码 
 
 	private Integer code;
 	private String message;

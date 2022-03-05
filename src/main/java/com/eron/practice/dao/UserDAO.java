@@ -11,7 +11,7 @@ import com.eron.practice.model.User;
 public interface UserDAO extends JpaRepository<User, Long> {
 
 	@Nullable
-	public  User getById(Long id);
+	public User getById(Long id);
 }
 
 

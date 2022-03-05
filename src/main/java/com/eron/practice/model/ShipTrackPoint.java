@@ -46,16 +46,23 @@ public class ShipTrackPoint implements Cloneable {
 	@Column(name = "create_time")
 	private LocalDateTime createTime; // 轨迹点创建时间 
 	
+	@Deprecated
 	public ShipTrackPoint() {
 		this.shipId = 0L;
 	}
-    
 	public ShipTrackPoint(Long shipId) { 
 		this.shipId = shipId;
 	}
-	
 	public ShipTrackPoint(Builder builder) {
-		
+		this.shipId = builder.shipId;
+		this.rotationAcceleration = builder.rotationAcceleration;
+		this.sogSpeed = builder.sogSpeed;
+		this.cogCource = builder.cogCource;
+		this.speed = builder.speed;
+		this.cource = builder.cource;
+		this.rudder = builder.rudder;
+		this.longitude = builder.longitude;
+		this.latitude = builder.latitude;
 	}
 	
 	public static Builder createBuilder() {
@@ -64,6 +71,60 @@ public class ShipTrackPoint implements Cloneable {
 	
 	public static class Builder { 
 		// 以后可以实现快速创建和参数验证 
+		//private Long id; // 自增主键  
+		private Long shipId; // 船舶id @See Ship  必须赋值 
+		private Float rotationAcceleration = 0F; // 转向角加速度 
+		private Float sogSpeed = 0F; // 对地船舶速度 
+		private Float cogCource = 0F; // 对地航向 
+		private Float speed = 0F; // 船速 speed - 流速 = sogSpeed 
+		private Float cource = 0F; // 船向 cource = cogCource 
+		private Float rudder = 0F; // 船舶舵角 
+		private Float longitude = 0F; // 经度 
+		private Float latitude = 0F; // 纬度 
+		//private LocalDateTime createTime; // 轨迹点创建时间 
+		private Builder shipId(Long shipId) {
+			this.shipId = shipId;
+			return this;
+		}
+		private Builder rotationAcceleration(Float rotationAcceleration) {
+			this.rotationAcceleration = rotationAcceleration;
+			return this;
+		}
+		private Builder sogSpeed(Float sogSpeed) {
+			this.sogSpeed = sogSpeed;
+			return this;
+		}
+		private Builder cogCource(Float cogCource) {
+			this.cogCource = cogCource;
+			return this;
+		}
+		private Builder speed(Float speed) {
+			this.speed = speed;
+			return this;
+		}
+		private Builder cource(Float cource) {
+			this.cource = cource;
+			return this;
+		}
+		private Builder rudder(Float rudder) {
+			this.rudder = rudder;
+			return this;
+		}
+		private Builder longitude(Float longitude) {
+			this.longitude = longitude;
+			return this;
+		}
+		private Builder latitude(Float latitude) {
+			this.latitude = latitude;
+			return this;
+		}
+		
+		public ShipTrackPoint build() {
+			if(this.shipId == null) {
+				throw new IllegalArgumentException("shipId of ShipTrackPoint must required !");
+			}
+			return new ShipTrackPoint(this);
+		}
 	}
 	
 	@Override

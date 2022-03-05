@@ -15,7 +15,7 @@ import com.eron.practice.model.ShipTrackPoint;
 @Repository 
 public interface ShipTrackPointDAO extends JpaRepository<ShipTrackPoint, Long> {
 
-	@Query(value = "select t from ShipTrackPoint t wheer t.shipId = ?1 ")
+	@Query(value = "select t from ShipTrackPoint t where t.shipId = ?1 ")
 	public List<ShipTrackPoint> findTrackPointsOfShip(Long shipId);
 	
 	// 自定义删除可以返回删除值

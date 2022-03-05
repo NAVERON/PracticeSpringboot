@@ -62,3 +62,13 @@ alter table ship_track_point add column rudder float(10) default '0' comment 'sh
 
 
 
+
+
+
+
+
+
+
+
+
+

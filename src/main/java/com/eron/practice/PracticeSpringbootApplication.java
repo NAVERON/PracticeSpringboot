@@ -17,15 +17,17 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication // = AutoConfiguration(EnableConfiguration)  ComponentScan  
 @EnableScheduling  // 启动可定时注解 Scheduled 
 // mybatis 注解配置  Mappercan 或者 Mapper 
-public class PracticeApplication implements CommandLineRunner { 
+public class PracticeSpringbootApplication implements CommandLineRunner { 
 	
-	private static final Logger log = LoggerFactory.getLogger(PracticeApplication.class);
+	private static final Logger log = LoggerFactory.getLogger(PracticeSpringbootApplication.class);
 	
 	@Resource 
 	private Environment env; 
 	
 	public static void main(String[] args) { 
-		SpringApplication.run(PracticeApplication.class, args); 
+		SpringApplication application = new SpringApplication(PracticeSpringbootApplication.class);
+		application.run(args);
+		//SpringApplication.run(PracticeSpringbootApplication.class, args); 
 	} 
 	
 	@Override 

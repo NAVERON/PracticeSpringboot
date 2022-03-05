@@ -61,7 +61,7 @@ public class CommonControllerAdvice { //对controller增加统一的操作和处
 	}
 	
 	@ExceptionHandler(value = RuntimeException.class)
-	public ModelAndView customeRuntimeError(RuntimeException ex) {
+	public ModelAndView customeRuntimeError(RuntimeException ex) {  // just for test 
 		ModelAndView modelView = new ModelAndView();
 		
 		Map<String, String> exceptionInfo = new HashMap<>();
@@ -71,6 +71,8 @@ public class CommonControllerAdvice { //对controller增加统一的操作和处
 		modelView.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 		modelView.setViewName("404");
 		modelView.addObject(exceptionInfo);
+		
+		log.error("customeRuntimeError ERROR: {}", ex);
 		
 		return modelView;
 	}

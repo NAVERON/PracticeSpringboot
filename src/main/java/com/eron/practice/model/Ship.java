@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.bytebuddy.build.BuildLogger;
+
 
 
 @Entity
@@ -45,7 +47,8 @@ public class Ship implements Cloneable {
 	@Column(name = "update_time")
 	private LocalDateTime updateTime; // 船舶属性修改时间 
 	
-	public Ship() {
+	@Deprecated
+	public Ship() {  // 禁用
 		this.userId = 0L; 
 		this.name = "NULL";
 	}
@@ -56,7 +59,14 @@ public class Ship implements Cloneable {
 	}
 	
 	public Ship(Builder builder) {
-		
+		this.userId = builder.userId;
+		this.name = builder.name;
+		this.mmsi = builder.mmsi;
+		this.imoNumber = builder.imoNumber;
+		this.callNumber = builder.callNumber;
+		this.type = builder.type;
+		this.electronicType = builder.electronicType;
+		this.draft = builder.draft;
 	}
 	
 	/**
@@ -68,9 +78,52 @@ public class Ship implements Cloneable {
 	}
 	
 	public static class Builder {
+		//private Long id; // 自动生成的id 
+		private Long userId; // 用户ID @See User  **必须赋值** 
+		private String name = "NULL"; // 船舶名称   **必须赋值** 
+		private String mmsi = "NULL"; // mmsi Maritime Mobile Service Identify 水上移动通信业务标识码
+		private String imoNumber = "NULL"; // IMO ship identification number  
+		private String callNumber = "NULL"; // CALL SIGN,是国际海事组织IMO指定给每条船舶唯一的识别信号，CALL SIGN主要的作用就是在船舶海上联络、码头靠泊、信息报告的时候使用 
+		private Integer type = 0; // 船舶类型 
+		private Integer electronicType = 0; // 船舶电子设备类型 GPS AIS 等电子设备, router项目有编码 
+		private Float draft = 0F; // 船舶吃水 m/dt 
+		//private LocalDateTime createTime; // 船舶创建时间 
+		//private LocalDateTime updateTime; // 船舶属性修改时间 
+		
+		private Builder name(String name) {
+			this.name = name;
+			return this;
+		}
+		private Builder mmsi(String mmsi) {
+			this.mmsi = mmsi;
+			return this;
+		}
+		private Builder imoNumber(String imoNumber) {
+			this.imoNumber = imoNumber;
+			return this;
+		}
+		private Builder callNumber(String callNumber) {
+			this.callNumber = callNumber;
+			return this;
+		}
+		private Builder type(Integer type) {
+			this.type = type;
+			return this;
+		}
+		private Builder electronicType(Integer electronicType) {
+			this.electronicType = electronicType;
+			return this;
+		}
+		private Builder draft(Float draft) {
+			this.draft = draft;
+			return this;
+		}
 		
 		public Ship build() {
 			// 检查参数合法化 
+			if (this.userId == null) {
+				throw new IllegalArgumentException("userId of Ship is Required !");
+			}
 			return new Ship(this);
 		}
 	}

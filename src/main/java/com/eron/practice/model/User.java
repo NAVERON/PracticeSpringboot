@@ -35,7 +35,9 @@ public class User implements Cloneable {
 	@Column(name = "update_time")
 	private LocalDateTime updateTime; // 最近一次修改属性的时间 
 	
+	@Deprecated
 	public User() {
+		// 默认值处理  一般情况下不使用
 		this.name = "NULL";
 		this.password = DigestUtils.md5DigestAsHex("".getBytes());
 		this.registEmail = "NULL";
@@ -48,16 +50,41 @@ public class User implements Cloneable {
 	}
 	
 	public User(Builder builder) {
+		this.name = builder.name;
+		this.password = builder.password;
+		this.registEmail = builder.registEmail;
 		
+		// 其他的不要给值，由数据库自动生成
 	}
 	
 	public static Builder createBuilder() {
 		return new Builder();
 	}
 	
-	public static class Builder {
+	public static class Builder {  // 内建 
+		
+		//private Long id; // 自增主键id
+		private String name = "NULL"; // 用户名称  **必须赋值**
+		private String password = DigestUtils.md5DigestAsHex("".getBytes());; // 用户设定的密码 md5运算  **必须赋值**
+		private String registEmail = "NULL"; // 注册邮箱  **必须赋值** 
+		//private LocalDateTime createTime; // 创建时间
+		//private LocalDateTime updateTime; // 最近一次修改属性的时间 
+		
+		private Builder name(String name) {
+			this.name = name;
+			return this;
+		}
+		private Builder password(String password) {
+			this.password = password;
+			return this;
+		}
+		private Builder registEmail(String registEmail) {
+			this.registEmail = registEmail;
+			return this;
+		}
 		
 		public User build() {
+			// 必须数字和格式需要检查 
 			return new User(this);
 		}
 	}

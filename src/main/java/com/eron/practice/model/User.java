@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.util.DigestUtils;
 
 
@@ -27,8 +29,10 @@ public class User implements Cloneable {
 	@Column(name = "name")
 	private String name; // 用户名称  **必须赋值**
 	@Column(name = "password")
+	@NonNull
 	private String password; // 用户设定的密码 md5运算  **必须赋值**
 	@Column(name = "regist_email")
+	@NonNull
 	private String registEmail; // 注册邮箱  **必须赋值** 
 	@Column(name = "create_time")
 	private LocalDateTime createTime; // 创建时间
@@ -66,25 +70,32 @@ public class User implements Cloneable {
 		//private Long id; // 自增主键id
 		private String name = "NULL"; // 用户名称  **必须赋值**
 		private String password = DigestUtils.md5DigestAsHex("".getBytes());; // 用户设定的密码 md5运算  **必须赋值**
-		private String registEmail = "NULL"; // 注册邮箱  **必须赋值** 
+		private String registEmail; // 注册邮箱  **必须赋值** 
 		//private LocalDateTime createTime; // 创建时间
 		//private LocalDateTime updateTime; // 最近一次修改属性的时间 
+		public Builder() {}
 		
-		private Builder name(String name) {
+		public Builder name(String name) {
 			this.name = name;
 			return this;
 		}
-		private Builder password(String password) {
+		public Builder password(String password) {
 			this.password = password;
 			return this;
 		}
-		private Builder registEmail(String registEmail) {
+		public Builder registEmail(String registEmail) {
 			this.registEmail = registEmail;
 			return this;
 		}
 		
 		public User build() {
 			// 必须数字和格式需要检查 
+			if(this.password == null) {
+				throw new IllegalArgumentException("password of User must required !");
+			}
+			if(this.registEmail == null) {
+				throw new IllegalArgumentException("registEmail of User must required !");
+			}
 			return new User(this);
 		}
 	}

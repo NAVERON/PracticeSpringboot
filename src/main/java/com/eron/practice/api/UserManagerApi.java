@@ -26,7 +26,7 @@ import com.eron.practice.utils.ResponseUtils;
 @RestController
 @RequestMapping(value = "api/v1")
 public class UserManagerApi { 
-	
+	// 单独请求, 不和页面的控制混合   这种的单独用在客户端吧  以后查找混合的方式 
 	private static final Logger log = LoggerFactory.getLogger(UserManagerApi.class);
 	
 	private final ThreadLocal<String> tesThreadLocal = new ThreadLocal<>();  // 多线程场景下公共变量的使用 

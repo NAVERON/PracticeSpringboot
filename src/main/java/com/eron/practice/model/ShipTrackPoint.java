@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
 
 
 
@@ -26,6 +27,7 @@ public class ShipTrackPoint implements Cloneable {
 	@Column(name = "id", updatable = false, nullable = false)
     private Long id; // 自增主键  
 	@Column(name = "ship_id")
+	@NonNull
 	private Long shipId; // 船舶id @See Ship  必须赋值 
 	@Column(name = "rotation_acceleration")
 	private Float rotationAcceleration; // 转向角加速度 
@@ -82,39 +84,41 @@ public class ShipTrackPoint implements Cloneable {
 		private Float longitude = 0F; // 经度 
 		private Float latitude = 0F; // 纬度 
 		//private LocalDateTime createTime; // 轨迹点创建时间 
-		private Builder shipId(Long shipId) {
+		
+		public Builder() {}
+		public Builder shipId(Long shipId) {
 			this.shipId = shipId;
 			return this;
 		}
-		private Builder rotationAcceleration(Float rotationAcceleration) {
+		public Builder rotationAcceleration(Float rotationAcceleration) {
 			this.rotationAcceleration = rotationAcceleration;
 			return this;
 		}
-		private Builder sogSpeed(Float sogSpeed) {
+		public Builder sogSpeed(Float sogSpeed) {
 			this.sogSpeed = sogSpeed;
 			return this;
 		}
-		private Builder cogCource(Float cogCource) {
+		public Builder cogCource(Float cogCource) {
 			this.cogCource = cogCource;
 			return this;
 		}
-		private Builder speed(Float speed) {
+		public Builder speed(Float speed) {
 			this.speed = speed;
 			return this;
 		}
-		private Builder cource(Float cource) {
+		public Builder cource(Float cource) {
 			this.cource = cource;
 			return this;
 		}
-		private Builder rudder(Float rudder) {
+		public Builder rudder(Float rudder) {
 			this.rudder = rudder;
 			return this;
 		}
-		private Builder longitude(Float longitude) {
+		public Builder longitude(Float longitude) {
 			this.longitude = longitude;
 			return this;
 		}
-		private Builder latitude(Float latitude) {
+		public Builder latitude(Float latitude) {
 			this.latitude = latitude;
 			return this;
 		}

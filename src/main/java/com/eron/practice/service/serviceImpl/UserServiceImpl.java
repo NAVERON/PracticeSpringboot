@@ -36,6 +36,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public User newUser(User user) {
+		// 注册新用户  检查邮箱是否重复
+
 		User savedUser = userDAO.save(user);
 		return savedUser;
 	}

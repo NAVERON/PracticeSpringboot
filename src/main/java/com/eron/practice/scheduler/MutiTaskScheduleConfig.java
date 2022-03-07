@@ -9,7 +9,7 @@ import org.springframework.scheduling.config.IntervalTask;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.stereotype.Component;
 
-@Component 
+//@Component 
 public class MutiTaskScheduleConfig implements SchedulingConfigurer {
 	
 	private static final Logger log = LoggerFactory.getLogger(MutiTaskScheduleConfig.class);

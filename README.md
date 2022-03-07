@@ -36,6 +36,12 @@
 3. 定义api的时候 需要注意接口重复, 所以一般在同一个api类中最好使用不同的前缀  
 4. resource docs目录下存放自定义脚本  
 5. jpa 自定义query的使用, 删除语句返回删除数据的表示, 重写deleteById 方法等. 自定义一种按照java对象查询, 另一种使用nativeuery = true 直接写SQL  
+6. controller返回示图, 当前一把使用setViewName, 没有使用setView 原因延后查询
+7. 页面跳转 redirect: 后跟url地址, 直接返回string时, 返回的是templates的模板地址 
+8. 避免重复提交的方法中, 一般的思路为 DCL 或者 cache 缓存，设置过期时间； 简单做法还有LRU LinkedListHash 可以直接使用, 一般用作对频繁请求不那么敏感的场景  
+9. Builder 内建static class 构建, 类似于工厂模式, 快速创建对象  
+10. 工具类一般使用静态方法, 使用时直接调用 ClassName.xxxMethod()  
+11. 返回Json结构使用泛型创建ResponseBody  返回业务码和对应的含义, 世纪的应用中团队自行定义和修改, 区分不同的业务场景 划分不同的Enum  
 
 
 

@@ -37,6 +37,7 @@ public class CommonControllerAdvice { //对controller增加统一的操作和处
 	public Map<String, String> customeModelAttribute(Model model) {
 		Map<String, String> globalAttribute = new HashMap<String, String>();
 		
+		log.warn("customeModelAttribute globalAttribute : {}", globalAttribute);
 		return globalAttribute;
 	}
 
@@ -51,6 +52,8 @@ public class CommonControllerAdvice { //对controller增加统一的操作和处
 	@ExceptionHandler(value = Exception.class)
 	@ResponseBody   // json 格式化   RestControllerAdvice = ControllerAdvice + RespnseBody
 	public Map<String, String> customeExceptionHandler(Exception ex){
+		log.error("customeExceptionHandler --");
+		
 		Map<String, String> exceptionInfo = new HashMap<>();
 		exceptionInfo.put("code", ResponseCodeEnum.FAIL.getCode().toString());
 		exceptionInfo.put("message", ResponseCodeEnum.FAIL.getMessage());
@@ -75,6 +78,18 @@ public class CommonControllerAdvice { //对controller增加统一的操作和处
 		log.error("customeRuntimeError ERROR: {}", ex);
 		
 		return modelView;
+	}
+	
+	@ExceptionHandler(value = IllegalArgumentException.class)
+	@ResponseBody
+	public Map<String, String> customeIllegalArgumentException(IllegalArgumentException ex) {
+		Map<String, String> exceptionInfo = new HashMap<>();
+		exceptionInfo.put("code", ResponseCodeEnum.PARAM_ERROR.getCode().toString());
+		exceptionInfo.put("message", ResponseCodeEnum.PARAM_ERROR.getMessage());
+		
+		log.error("Custome Exception error : {}\n, cause: {}", ex.getMessage(), ex.getCause());
+		
+		return exceptionInfo;
 	}
 	
 }

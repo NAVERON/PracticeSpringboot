@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
 
 import net.bytebuddy.build.BuildLogger;
 
@@ -27,6 +28,7 @@ public class Ship implements Cloneable {
 	@Column(name = "id", updatable = false, nullable = false)
     private Long id; // 自动生成的id 
 	@Column(name = "user_id")
+	@NonNull
 	private Long userId; // 用户ID @See User  **必须赋值** 
 	@Column(name = "name")
 	private String name; // 船舶名称   **必须赋值** 
@@ -89,32 +91,32 @@ public class Ship implements Cloneable {
 		private Float draft = 0F; // 船舶吃水 m/dt 
 		//private LocalDateTime createTime; // 船舶创建时间 
 		//private LocalDateTime updateTime; // 船舶属性修改时间 
-		
-		private Builder name(String name) {
+		public Builder() {}
+		public Builder name(String name) {
 			this.name = name;
 			return this;
 		}
-		private Builder mmsi(String mmsi) {
+		public Builder mmsi(String mmsi) {
 			this.mmsi = mmsi;
 			return this;
 		}
-		private Builder imoNumber(String imoNumber) {
+		public Builder imoNumber(String imoNumber) {
 			this.imoNumber = imoNumber;
 			return this;
 		}
-		private Builder callNumber(String callNumber) {
+		public Builder callNumber(String callNumber) {
 			this.callNumber = callNumber;
 			return this;
 		}
-		private Builder type(Integer type) {
+		public Builder type(Integer type) {
 			this.type = type;
 			return this;
 		}
-		private Builder electronicType(Integer electronicType) {
+		public Builder electronicType(Integer electronicType) {
 			this.electronicType = electronicType;
 			return this;
 		}
-		private Builder draft(Float draft) {
+		public Builder draft(Float draft) {
 			this.draft = draft;
 			return this;
 		}

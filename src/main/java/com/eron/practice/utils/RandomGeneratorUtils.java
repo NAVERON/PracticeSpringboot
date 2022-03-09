@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class RandomGenerator {
+public class RandomGeneratorUtils {
 	
 	public static String generateString() {
 		String method1 = new Random().ints(10, 33, 122).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
@@ -37,6 +37,12 @@ public class RandomGenerator {
 	}
 
 }
+
+
+
+
+
+
 
 
 

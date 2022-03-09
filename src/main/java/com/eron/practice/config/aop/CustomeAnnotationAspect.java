@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.eron.practice.model.CacheStore;
 import com.google.common.cache.Cache;
 
 @Component 
@@ -19,7 +20,7 @@ public class CustomeAnnotationAspect {
 	private static final Logger log = LoggerFactory.getLogger(CustomeAnnotationAspect.class);
 	
 	@Resource
-	private Cache<String, String> cache;
+	private CacheStore<String> simpleStringCache;
 	
 	@Pointcut(value = "")
 	public void customeAnnotationPointcut() {}

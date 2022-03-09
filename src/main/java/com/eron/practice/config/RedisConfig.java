@@ -1,4 +1,4 @@
-package com.eron.practice.config.redis;
+package com.eron.practice.config;
 
 import org.springframework.context.annotation.Configuration;
 

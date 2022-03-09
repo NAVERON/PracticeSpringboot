@@ -1,7 +1,7 @@
 package com.eron.practice.utils;
 
-import com.eron.practice.model.ResponseCodeEnum;
 import com.eron.practice.model.ResponseEntity;
+import com.eron.practice.model.constant.ResponseCodeEnum;
 
 
 

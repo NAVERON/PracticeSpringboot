@@ -16,6 +16,14 @@ public interface UserService {
 	public void deleteUser(Long id);
 	// 修改 id 下的用户属性 
 	public User modifyUser(Long id, User user);
+	// 根据用户名称和密码登陆 
+	public User userLoginCheck(String userName, String password);
+	// 验证码前后验证
+	public String verifyCodeProcess(String emailAddress);
+	// 注册验证处理
+	public User checkOfRegistProcess(String userName, String password, String registEmail, String verifycationCode);
+	
+	
 }
 
 

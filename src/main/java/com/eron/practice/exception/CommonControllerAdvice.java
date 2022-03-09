@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.eron.practice.model.ResponseCodeEnum;
+import com.eron.practice.model.constant.ResponseCodeEnum;
 
 // import org.springframework.web.bind.annotation.RestControllerAdvice;
 // RestControllerAdvice = @ControllerAdvice + @ResponseBody  /// 可以统一返回的格式 不需要每个方法都写上 Responsebody 

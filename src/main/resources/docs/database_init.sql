@@ -13,7 +13,8 @@ create table if not exists `user` (
 
 create index idx_user on user (id); 
 create unique index idx_regist_email on user (regist_email); 
-
+-- 修改用户密码长度, md5 32
+alter table user modify column password char(50);
 
 -- 船舶静态信息, 需要与船舶的动态数据分开, 这样数据分割可以加速数据存储, 防止后期出现数据瓶颈 
 create table if not exists `ship` ( 

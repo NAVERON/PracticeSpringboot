@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.el.parser.AstFalse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -34,9 +35,9 @@ public class User implements Cloneable {
 	@Column(name = "regist_email")
 	@NonNull
 	private String registEmail; // 注册邮箱  **必须赋值** 
-	@Column(name = "create_time")
+	@Column(name = "create_time", insertable = false, updatable = false)
 	private LocalDateTime createTime; // 创建时间
-	@Column(name = "update_time")
+	@Column(name = "update_time", insertable = false, updatable = false)
 	private LocalDateTime updateTime; // 最近一次修改属性的时间 
 	
 	@Deprecated

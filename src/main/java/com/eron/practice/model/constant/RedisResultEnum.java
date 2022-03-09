@@ -1,4 +1,4 @@
-package com.eron.practice.model;
+package com.eron.practice.model.constant;
 
 import javax.management.loading.PrivateClassLoader;
 

@@ -35,9 +35,9 @@ public class UserManagerApi {
 	// @Qualifier // 以后如果有其他的实现, 补充空值为设定值 
 	private UserService userService; 
 	
-	@GetMapping(value = "test")
-	public ResponseEntity<Object> test(@ModelAttribute(value = "custome") Map<String, String> custome) {
-		
+	@GetMapping(value = "test")  // 测试
+	public ResponseEntity<Object> test(@ModelAttribute(value = "custome") Map<String, String> customeAttr) {
+		log.info("测试引用自定义 modelAttribute : {}", customeAttr);
 		// 测试在 ApiControllerAdvice 中 model attribude 自定义属性
 		
 		return ResponseUtils.success();

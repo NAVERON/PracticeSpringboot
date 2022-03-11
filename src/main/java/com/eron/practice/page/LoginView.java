@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,8 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.eron.practice.model.ResponseEntity;
 import com.eron.practice.model.User;
 import com.eron.practice.service.UserService;
-import com.eron.practice.utils.MailClientUtils;
-import com.eron.practice.utils.RandomGeneratorUtils;
 import com.eron.practice.utils.ResponseUtils;
 
 
@@ -61,29 +58,33 @@ public class LoginView {
 		log.info("doLogin --> [ nusername : {}, password : {} ]", userName, password);
 		
 		// 使用用户名称 可以是用户名/注册邮箱 
-		User loginUser = userService.userLoginCheck(userName, password);
-		log.info("登陆查询结果 : {}", loginUser);
+		User verifiedUser = userService.userLoginCheck(userName, password);
+		log.info("登陆查询结果 : {}", verifiedUser);
 		
 		// 没有用户信息, 表示用户名/密码错误  或  用户没有注册 
-		if(loginUser == null) {
+		if(verifiedUser == null) {
 			log.warn("没有查询到用户, 返回登陆界面");
 			
-			modelAndView.getModelMap().put("status", false);
-			modelAndView.getModelMap().put("message", "用户登陆信息不正确或没有注册");
+			modelAndView.addObject("status", false);
+			modelAndView.addObject("message", "用户登陆信息不正确或没有注册");
 			
 			modelAndView.setViewName("login");  // modelAndView setObject 是设置请求参数的 
 		} else {
-			log.info("查询到用户 : {}, 进入用户主页", loginUser);
+			log.info("查询到用户 : {}, 进入用户主页", verifiedUser);
 			// 可以不使用这种跳转  直接转向用户主页 内部跳转 传入用户信息即可, 只有错误情况才需要其余保存信息
-			// linux 的哲学美学  美欧报错就是正确 
-			redirectAttr.addFlashAttribute("status", true);
-			redirectAttr.addFlashAttribute("message", "用户查询成功");
-			redirectAttr.addFlashAttribute("user", loginUser);
-			
-			modelAndView.setViewName("redirect:/page/v1/userHome");  // 默认foreard 重定向
+			// linux 的哲学美学  没有报错就是正确 
+						
+			modelAndView.setViewName("redirect:/page/v1/users?userId=" + verifiedUser.getId());  // 默认foreard 重定向
 		}
 		
 		// 登陆成功进入用户首页
+		return modelAndView;
+	}
+	
+	@GetMapping(value = "doLogout")
+	public ModelAndView doLogout(ModelAndView modelAndView, @RequestParam(value = "userId") Long userId) {
+		// 用户登出操作和处理
+		
 		return modelAndView;
 	}
 	
@@ -106,8 +107,14 @@ public class LoginView {
 		User registedUser = userService.checkOfRegistProcess(userName, password, registEmail, verifycationCode);
 		// 注册成功 返回登陆界面  注册失败, 返回注册界面 
 		if(registedUser == null) {
-			modelAndView.setViewName("redirect:/page/v1/regist");
+			modelAndView.getModelMap().put("status", false);
+			modelAndView.getModelMap().put("message", "注册失败, 请检查");
+			
+			modelAndView.setViewName("regist");
 		} else {
+			modelAndView.getModelMap().put("status", true);
+			modelAndView.getModelMap().put("message", "注册成功, 请登录");
+			
 			modelAndView.setViewName("redirect:/page/v1/login");
 		}
 		

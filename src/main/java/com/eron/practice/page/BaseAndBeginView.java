@@ -23,7 +23,7 @@ public class BaseAndBeginView {
 	
 	@GetMapping(value = "home")
 	public ModelAndView home(ModelAndView modelAndView) {
-		modelAndView.setViewName("redirect:/");  // 重定向后面写  url地址, 不是html 模板
+		modelAndView.setViewName("forward:/");  // 重定向后面写  url地址, 不是html 模板
 		return modelAndView;  
 		// "redirect:/" 重定向后使用名称是url的后缀  所以不能是模板名称 index 
 		// 重定向 RedirectAttributes attr = new RedirectAttributesModelMap();  使用重定向属性 添加重定向 参数 加在方法参数里面 

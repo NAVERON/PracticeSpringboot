@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.eron.practice.dao.ShipDAO;
+import com.eron.practice.jpadao.ShipDAO;
 import com.eron.practice.model.Ship;
 import com.eron.practice.service.ShipService;
 

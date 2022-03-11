@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import com.eron.practice.dao.UserDAO;
+import com.eron.practice.jpadao.UserDAO;
 import com.eron.practice.model.User;
 import com.eron.practice.model.constant.CommonConstant;
 import com.eron.practice.service.UserService;

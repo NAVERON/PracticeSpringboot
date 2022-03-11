@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.eron.practice.dao.ShipTrackPointDAO;
+import com.eron.practice.jpadao.ShipTrackPointDAO;
 import com.eron.practice.model.ShipTrackPoint;
 import com.eron.practice.service.ShipTrackService;
 

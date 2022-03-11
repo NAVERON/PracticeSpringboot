@@ -1,4 +1,4 @@
-package com.eron.practice.dao;
+package com.eron.practice.jpadao;
 
 import java.util.Optional;
 

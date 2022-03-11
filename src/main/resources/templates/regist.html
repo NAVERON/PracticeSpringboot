@@ -12,9 +12,10 @@
 
 <body>
 
-    <form th:action = "@{/page/v1/doRegist}" method = "POST">
+    <form th:action = "@{/page/v1/doRegist}" method = "POST" onSubmit = "return encrypt()">
         用户名 : <input type = "text" name = "username" id = "user_name"></input> </br>
-        密码 : <input type = password name = "password" id = "pwd"></input> </br>
+        密码 : <input type = password id = "pwd"></input> 
+        <input type = "hidden" name = "password" id = "md5-pwd"></input> </br>
         注册邮箱 : <input type = text name = "registemail" id = "regist_email"></input> 
         <button type = "button" onclick = "sendVerifyCode()">发送验证码(5 min)</button> <span id = "verifyResult"></span> </br>
         邮箱验证码 : <input type = text name = "verifycation_code"></input> </br>
@@ -58,6 +59,13 @@
 	        }
 		});
 	}
+	
+   function encrypt(){
+        var pwd = $("#pwd").val();
+        $("#md5-pwd").val(md5(pwd));
+        return true;
+    }
+   
 </script>
 
 </html>

@@ -74,7 +74,8 @@ public class LoginView {
 			modelAndView.setViewName("login");  // modelAndView setObject 是设置请求参数的 
 		} else {
 			log.info("查询到用户 : {}, 进入用户主页", loginUser);
-			
+			// 可以不使用这种跳转  直接转向用户主页 内部跳转 传入用户信息即可, 只有错误情况才需要其余保存信息
+			// linux 的哲学美学  美欧报错就是正确 
 			redirectAttr.addFlashAttribute("status", true);
 			redirectAttr.addFlashAttribute("message", "用户查询成功");
 			redirectAttr.addFlashAttribute("user", loginUser);

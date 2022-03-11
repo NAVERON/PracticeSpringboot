@@ -53,6 +53,13 @@
             <appender-ref ref = "STDOUT"></appender-ref>
         </root>
     </springProfile>
+    <springProfile name = "raspberry">  <!-- 书梅派配置输出日志 -->
+        
+        <root level = "INFO">
+            <appender-ref ref = "STDOUT"></appender-ref>
+        </root>
+    
+    </springProfile>
     
     <springProfile name = "prod">
     

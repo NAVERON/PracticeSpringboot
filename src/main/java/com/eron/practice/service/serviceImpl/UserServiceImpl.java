@@ -86,8 +86,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String verifyCodeProcess(String emailAddress) { 
 		/**
-		 * 0 验证邮箱地址是否合法 
-		 * 1  生成随机码 
+		 * 0 验证邮箱地址是否合法    邮箱是数据库唯一索引，不能重复，需要提前判断 
+		 * 1  生成随机码  如果短时间内吸纳共同的邮箱注册, 不需要重复生成，或者直接覆盖之前生成的验证码
 		 * 2  保存到Redis, 设置过期时间, 比如 5 min 
 		 * 3  Redis 正常后, 发送邮件, 不正常返回错误信息展示, 重新注册 
 		 */

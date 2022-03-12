@@ -1,4 +1,4 @@
-package com.eron.practice.dao.converter;
+package com.eron.practice.jpadao.converter;
 
 import java.sql.Date;
 import java.time.LocalDate;

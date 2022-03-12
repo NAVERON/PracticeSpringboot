@@ -18,6 +18,9 @@ public interface ShipDAO extends JpaRepository<Ship, Long> {
 	@Query(value = "select s from Ship s where s.id = ?2 and s.userId = ?1 ")
 	public Ship findShipByUserIdAndShipId(Long userId, Long shipId);
 	
+	@Query(value = "delete from Ship s where s.id = ?2 and s.userId = ?1 ")
+	public Ship deleteShipByUserIdAndShipId(Long userId, Long shipId);
+	
 }
 
 

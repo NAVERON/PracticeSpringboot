@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.el.parser.AstFalse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -44,9 +45,9 @@ public class Ship implements Cloneable {
 	private Integer electronicType; // 船舶电子设备类型 GPS AIS 等电子设备, router项目有编码 
 	@Column(name = "draft")
 	private Float draft; // 船舶吃水 m/dt 
-	@Column(name = "create_time")
+	@Column(name = "create_time", insertable = false, updatable = false)
 	private LocalDateTime createTime; // 船舶创建时间 
-	@Column(name = "update_time")
+	@Column(name = "update_time", insertable = false, updatable = false)
 	private LocalDateTime updateTime; // 船舶属性修改时间 
 	
 	@Deprecated
@@ -92,6 +93,10 @@ public class Ship implements Cloneable {
 		//private LocalDateTime createTime; // 船舶创建时间 
 		//private LocalDateTime updateTime; // 船舶属性修改时间 
 		public Builder() {}
+		public Builder userId(Long userId) {
+			this.userId = userId;
+			return this;
+		}
 		public Builder name(String name) {
 			this.name = name;
 			return this;

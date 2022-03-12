@@ -107,15 +107,17 @@ public class User implements Cloneable {
 	}
 	
 	// id 和 updatetime 不覆盖, 其余属性覆盖 
-	public void overrideAttributes(User another) {
+	public User overrideAttributes(User another) {
 		if (another == null) {
 			log.error("another User is null !!!");
-			return;
+			return this;
 		}
 		this.name = another.name;
 		this.password = another.password;
 		this.registEmail = another.registEmail;
 		this.createTime = another.createTime;
+		
+		return this;
 	}
 
 	/**

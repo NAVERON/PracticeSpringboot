@@ -18,11 +18,9 @@
         <input type = "hidden" name = "password" id = "md5-pwd"></input>
         <button type = "submit">登陆</button>
     </form>
-    </br>
     
-    <span th:text = "${message}"></span>
     </br>
-    <span th:text = "${status}"></span>
+    <span th:text = "${message}"></span> </br>
     
     </br>
     <a href = "/page/v1/regist">注册</a>
@@ -36,7 +34,7 @@
 <script type="text/javascript" th:src = "@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script> <!-- 引入bootstrapt js -->
 
 
-<script>
+<script type="text/javascript">
 	function encrypt(){
 		var pwd = $("#pwd").val();
 		$("#md5-pwd").val(md5(pwd));

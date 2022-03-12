@@ -17,7 +17,61 @@ User Password : <span th:text = "${user.password}"></span> </br>
 User Email : <span th:text = "${user.registEmail}"></span> </br>
 
 
+</br> <a th:href = "@{/page/v1/doLogout(userId=${user.id})}">登出</a> </br>
+
+</br> </hr> </br>
+
+<!-- 创建船舶  ajax -->
+<form th:action = "@{/page/v1/users/{userId}/newShip(userId=${user.id})}" method = "POST">
+	<input type = "hidden" name = "userId" th:value = "${user.id}"></input> </br>
+	ShipName : <input type = "text" name = "name"></input> </br>
+	mmsi : <input type = "text" name = "mmsi"></input> </br>
+	imoNumber : <input type = "text" name = "imoNumber"></input> </br>
+	callNumber : <input type = "text" name = "callNumber"></input> </br>
+	type : <input type = "text" name = "type"></input> </br>
+	electronicType : <input type = "text" name = "electronicType"></input> </br>
+	draft : <input type = "text" name = "draft"></input> </br>
+	
+	<button type = "submit">创建船舶对象</button>
+</form>
+
+</br> </hr> </br>
+
+<table>
+  <tr>
+    <th>row</th>
+    <th>shipId</th>
+    <th>userId</th>
+    <th>name</th>
+    <th>mmsi</th>
+    <th>imoNumber</th>
+    <th>callNumber</th>
+    <th>type</th>
+    <th>electronicType</th>
+    <th>draft</th>
+    <th>createTime</th>
+    <th>updateTime</th>
+  </tr>
+  <tr th:each = "ship, iterStat : ${ships}">
+    <th scope = "row" th:text = "${iterStat.count}"></th>
+    <td><a th:href = "@{/page/v1/ships/{userId}/{shipId}(userId=${user.id}, shipId=${ship.id})}" th:text = "${ship.id}">shipId</a></td>
+    <td th:text = "${ship.userId}">userId</td>
+    <td th:text = "${ship.name}">name</td>
+    <td th:text = "${ship.mmsi}">mmsi</td>
+    <td th:text = "${ship.imoNumber}">imoNumber</td>
+    <td th:text = "${ship.callNumber}">callNumber</td>
+    <td th:text = "${ship.type}">type</td>
+    <td th:text = "${ship.electronicType}">electronicType</td>
+    <td th:text = "${ship.draft}">draft</td>
+    <td th:text = "${ship.createTime}">createTime</td>
+    <td th:text = "${ship.updateTime}">updateTime</td>
+  </tr>
+</table>
 
 </body>
+
+<script type="text/javascript">
+
+</script>
 
 </html>

@@ -46,6 +46,7 @@
 13. post 请求使用RequestParam 参数, 需要直接在请求url中拼接参数, 不能使用requestBody, 另外 如果使用RequestBody 需要全部格式化成表传的Json  
 14. 如果开启了security 权限验证, 在某些情况会出现 禁止跨域请求  403 Foribion 错误, 可以临时关闭, 以后在了解接口安全相关的架构  
 15. 整体的逻辑架构中, controller曾最好不要处理多种符合逻辑, 全部放在service曾作逻辑哦处理, Controller 只处理参数验证 日志记录和试图设置ModelAndView 跳转参数等状态设置  
+16. 经过测试总结   ModelAndView 当设置普通视图的时候, addObject会传入页面对象, 当设置重定向试图的时候, 传入的是uri requestParam 参数
 
 
 

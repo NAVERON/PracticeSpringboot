@@ -68,9 +68,12 @@ public class ShipManagerApi {
 		return ResponseUtils.success();
 	}
 	
-	@PutMapping(value = "ships/{userId}")
-	public ResponseEntity<Object> modifyShipOfUser(@PathVariable(value = "userId") Long userId, @RequestBody Ship ship) {
-		Ship updatedShip =  shipService.modifyShipOfUser(userId, ship);
+	@PutMapping(value = "ships/{userId}/{shipId}")
+	public ResponseEntity<Object> modifyShipOfUser(
+			@PathVariable(value = "userId") Long userId, 
+			@PathVariable(value = "shipId") Long shipId, 
+			@RequestBody Ship ship) {
+		Ship updatedShip =  shipService.modifyShipOfUser(userId, shipId, ship);
 		
 		return ResponseUtils.success(updatedShip);
 	}

@@ -45,7 +45,7 @@ public class ShipTrackPoint implements Cloneable {
 	private Float longitude; // 经度 
 	@Column(name = "lat")
 	private Float latitude; // 纬度 
-	@Column(name = "create_time")
+	@Column(name = "create_time", insertable = false, updatable = false)
 	private LocalDateTime createTime; // 轨迹点创建时间 
 	
 	@Deprecated

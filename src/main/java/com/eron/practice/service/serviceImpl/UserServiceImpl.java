@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.eron.practice.jpadao.UserDAO;
+import com.eron.practice.model.CacheStore;
 import com.eron.practice.model.User;
 import com.eron.practice.model.constant.CommonConstant;
 import com.eron.practice.service.UserService;
@@ -33,6 +34,8 @@ public class UserServiceImpl implements UserService {
 	private MailClientUtils mailClient;
 	@Resource 
 	private StringRedisTemplate stringRedisTemplate;
+	@Resource
+	private CacheStore<User> loginUserCache;  // 缓存登录的用户对象
 	
 	public List<User> all() { 
 		return userDAO.findAll();
@@ -59,7 +62,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User modifyUser( Long id, User user) { // 如果存在id 覆盖属性, 不存在则生成新对象 
+	public User modifyUser(Long id, User user) { // 如果存在id 覆盖属性, 不存在则生成新对象 
 		User modifiedUser = null;
 		
 		Optional<User> userOpt = userDAO.findById(id);
@@ -67,12 +70,11 @@ public class UserServiceImpl implements UserService {
 		if(userOpt.isPresent()) {
 			User updateUser = userOpt.get();
 			// 属性完全复制 和 覆盖 
-			user.overrideAttributes(updateUser);
-			user.setId(id);
+			updateUser.overrideAttributes(user);
 			
-			modifiedUser = userDAO.save(user);
+			modifiedUser = userDAO.save(updateUser);
 		} else {
-			user.setId(id);
+			user.setId(id);  // 相当于新创建一个对象
 			modifiedUser = userDAO.save(user);
 		}
 		return modifiedUser;
@@ -80,7 +82,17 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User userLoginCheck(String userName, String password) {
-		return userDAO.getUserByPasswordAndNameOrEmail(userName, password);
+		User verifiedUser = null;
+		verifiedUser = userDAO.getUserByPasswordAndNameOrEmail(userName, password);
+		
+		if(verifiedUser == null) {
+			return null;
+		}
+		
+		// 如果查询正确, 缓存用户对象
+		loginUserCache.set(String.valueOf(verifiedUser.getId()), verifiedUser);
+		
+		return verifiedUser;
 	}
 
 	@Override
@@ -109,7 +121,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User checkOfRegistProcess(String userName, String password, String registEmail, String verifycationCode) {
+	public User registCheckProcess(String userName, String password, String registEmail, String verifycationCode) {
 		User registedUser = null;
 		String key = CommonConstant.REDIS_VERIFY_PREFIX + registEmail;
 		
@@ -119,8 +131,8 @@ public class UserServiceImpl implements UserService {
 			// 验证码通过 
 			// 构造用户对象 
 			registedUser = User.createBuilder().name(userName).password(password).registEmail(registEmail).build();
-			log.info("registed User info : {}", registedUser);
 			registedUser = userDAO.save(registedUser);
+			log.info("registed User info : {}", registedUser);
 			
 			stringRedisTemplate.delete(key);
 		}
@@ -128,9 +140,34 @@ public class UserServiceImpl implements UserService {
 		return registedUser;
 
 	}
+
+	@Override
+	public User oneByIDOfCache(Long userId) {
+		// 从cache中获取user
+		User cachedUser = loginUserCache.get(String.valueOf(userId));
+		log.info("cached User : {}", cachedUser);
+		
+		return cachedUser;
+	}
+
+	@Override
+	public String userLogout(Long userId) {
+		String message = "登出成功";
+		Boolean delStatus = loginUserCache.del(String.valueOf(userId));
+		if(!delStatus) {
+			message = "登出出现错误, 请重试";
+		}
+		
+		return message;
+	}
 	
 	
 }
+
+
+
+
+
 
 
 

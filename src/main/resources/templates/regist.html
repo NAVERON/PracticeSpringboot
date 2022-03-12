@@ -24,7 +24,6 @@
     
     </br>
     <span th:text = "${message}"></span> </br>
-    <span th:text = "${status}"></span> </br>
     
     <a href = "/page/v1/login">返回登陆</a> </br> 
     <a href = "/home">返回首页</a> 
@@ -35,7 +34,7 @@
 <script th:src = "@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src = "@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script> <!-- 引入bootstrapt js -->
 
-<script>
+<script type="text/javascript">
 	function sendVerifyCode(){
 		
 		input_regist_email = $("#regist_email").val();

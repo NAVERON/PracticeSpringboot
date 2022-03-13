@@ -30,7 +30,7 @@ User Email : <span th:text = "${user.registEmail}"></span> </br>
 	callNumber : <input type = "text" name = "callNumber"></input> </br>
 	type : <input type = "text" name = "type"></input> </br>
 	electronicType : <input type = "text" name = "electronicType"></input> </br>
-	draft : <input type = "text" name = "draft"></input> </br>
+	draft : <input type = "number" step = "0.01" oninput="if(value.length>11)value=value.slice(0,11);if(value<0)value=0" name = "draft"></input> </br>
 	
 	<button type = "submit">创建船舶对象</button>
 </form>

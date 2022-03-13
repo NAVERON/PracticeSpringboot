@@ -6,17 +6,94 @@
 <head>
     <meta charset="UTF-8">
     <title>船舶首页</title>
+    <link th:rel = "stylesheet" th:href = "@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css} "/> <!-- 引入bootstrapt css -->
+    
 </head>
 
 <body>
 
-进入船舶首页 ShipHome
-ShipId : <span th:text = "${ship.id}"></span> </br>
-ShipUserId : <span th:text = "${ship.userId}"></span> </br>
-ShipName : <span th:text = "${ship.name}"></span> </br>
-ShipMMSI : <span th:text = "${ship.mmsi}"></span> </br>
+进入船舶首页 ShipHome  </br>
 
+从属于用户<span th:text = "${user.name}">userName</span>
+
+ShipId : <span th:text = "${ship.id}">shipId</span> </br>
+ShipUserId : <span th:text = "${ship.userId}">shipUserId</span> </br>
+ShipName : <span th:text = "${ship.name}">shipName</span> </br>
+ShipMMSI : <span th:text = "${ship.mmsi}">ship mmsi</span> </br>
+
+
+</br> 当前船舶轨迹点 </br>
+
+<canvas id="myCanvas" width="1000" height="800"></canvas>
 
 </body>
 
+<script th:src = "@{/js/custome.js}"></script>   <!-- 引入自定义js -->
+<script th:src = "@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src = "@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script> <!-- 引入bootstrapt js -->
+
+<script type="text/javascript" th:inline = "javascript">
+	var canvas;
+	var ctx;
+	var canvasWidth;
+	var canvasHeight;
+	var id;
+	
+	function tracksDraw() {
+		var tmp = [[${tracks}]];
+		var shipTracks = JSON.parse(tmp);
+		console.log(shipTracks);
+		
+		canvas = document.getElementById('myCanvas');
+		ctx = canvas.getContext('2d');
+		canvasWidth = canvas.width;
+		canvasHeight = canvas.height;
+		// id = ctx.getImageData(0, 0, 1, 1);  // 测试使用imagedata填充图形 以后再学习前端html5 
+		
+		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+		// ctx.clearRect(0, 0, 1000, 800);
+		
+		// var id = ctx.getImageData(0, 0, 1000, 800);
+		// var pixels = id.data;
+		
+		shipTracks.forEach(track => {
+			console.log("每个对象打印 : " + track.ShipId + "=" + track.CreateTime);
+		});
+		
+		ctx.fillStyle = "#ff0000";  // 填充颜色 
+		for (var i = 0; i < shipTracks.length; ++i) {
+			var track = shipTracks[i];
+			console.log(track.Id + " : " + track.Latitude + "," + track.Longitude);
+			/*
+			var x = track.Latitude;
+			var y = track.Longitude;
+			var r = Math.floor(Math.random() * 256);
+			var g = Math.floor(Math.random() * 256);
+			var b = Math.floor(Math.random() * 256);
+			var off = (y * id.width + x) * 4;
+			pixels[off] = r;
+			pixels[off + 1] = g;
+			pixels[off + 2] = b;
+			pixels[off + 3] = 255;
+			*/
+			
+			
+			ctx.fillRect(track.Latitude, track.Longitude, 5, 5);
+		}
+		// ctx.putImageData(id, 0, 0);
+		
+	}
+	
+	window.onload = tracksDraw;
+</script>
+
 </html>
+
+
+
+
+
+
+
+
+

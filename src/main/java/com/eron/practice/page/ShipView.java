@@ -20,9 +20,10 @@ import com.eron.practice.model.User;
 import com.eron.practice.service.ShipService;
 import com.eron.practice.service.ShipTrackService;
 import com.eron.practice.service.UserService;
+import com.eron.practice.utils.JsonUtils;
 
-@Controller
-@RequestMapping(value = "page/v1")
+@Controller 
+@RequestMapping(value = "page/v1") 
 public class ShipView {
 	
 	private static final Logger log = LoggerFactory.getLogger(ShipView.class);
@@ -33,9 +34,9 @@ public class ShipView {
 	@Resource 
 	private ShipService shipService;
 	
-	@Resource
+	@Resource 
 	private ShipTrackService shipTrackService;
-
+	
 	@GetMapping(value = "ships/{userId}/{shipId}") 
 	public ModelAndView shipHome(ModelAndView modelAndView, 
 			@PathVariable(value = "userId") Long userId, 
@@ -54,10 +55,12 @@ public class ShipView {
 			return modelAndView;
 		}
 		List<ShipTrackPoint> shipTracks = shipTrackService.trackPointsOfShip(shipId);
+		String shipTracksString = JsonUtils.toJsonString(shipTracks);
+		log.info("转化后的对象 : {}", shipTracksString);  // 后期船舶的轨迹点数量会急剧增大,需要考虑采用措辞分批的方式, 或者js获取队列内容  
 		
 		modelAndView.addObject("user", cachedUser);
 		modelAndView.addObject("ship", ship);
-		modelAndView.addObject("shipTracks", shipTracks); // 展示一艘船舶的所有轨迹点   可以直接从接口获取数据, 这里可以不重复创建接口 
+		modelAndView.addObject("tracks", shipTracksString); // 展示一艘船舶的所有轨迹点   可以直接从接口获取数据, 这里可以不重复创建接口 
 		
 		modelAndView.setViewName("shipHome");
 		

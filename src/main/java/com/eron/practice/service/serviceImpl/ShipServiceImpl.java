@@ -1,17 +1,14 @@
 package com.eron.practice.service.serviceImpl;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.unbescape.css.CssIdentifierEscapeLevel;
 
 import com.eron.practice.jpadao.ShipDAO;
-import com.eron.practice.jpadao.UserDAO;
 import com.eron.practice.model.Ship;
 import com.eron.practice.service.ShipService;
 
@@ -89,7 +86,11 @@ public class ShipServiceImpl implements ShipService {
 	public Ship newShipOfUser(Long userId, String name, String mmsi, String imoNumber, String callNumber, Integer type,
 			Integer electronicType, Float draft) {
 
-		Ship ship = Ship.createBuilder().userId(userId).name(name).mmsi(mmsi).imoNumber(imoNumber).callNumber(callNumber).type(type).electronicType(electronicType).draft(draft).build();
+		Ship ship = Ship.createBuilder().userId(userId).name(name).mmsi(mmsi)
+				.imoNumber(imoNumber).callNumber(callNumber)
+				.type(type).electronicType(electronicType)
+				.draft(draft)
+				.build();
 		
 		Ship newShip = this.newShipOfUser(userId, ship);
 		

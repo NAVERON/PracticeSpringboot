@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
 		 * 3  Redis 正常后, 发送邮件, 不正常返回错误信息展示, 重新注册 
 		 */
 		String verifyCode = RandomGeneratorUtils.generateString();
-		String emailContent = "您好, 您的注册验证码是 : " + verifyCode;
+		String emailContent = "您好, 您的注册验证码是 : \n" + verifyCode;
 		
 		//mailClient.sendSimpleEmail(email, "ERON注册验证码", emailContent);
 		log.info("假装邮件已经发送 : {}", emailContent);

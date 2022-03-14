@@ -20,22 +20,22 @@ public class ShipTrackServiceImpl implements ShipTrackService {
 	
 	private static final Logger log = LoggerFactory.getLogger(ShipTrackServiceImpl.class);
 	
-	@Resource
+	@Resource 
 	private ShipTrackPointDAO shipTrackPointDAO;
 
-	@Override
+	@Override 
 	public ShipTrackPoint addTrackPointsToShip(Long shipId, ShipTrackPoint shipTrackPoint) {
 		shipTrackPoint.setShipId(shipId);
 		
 		return shipTrackPointDAO.save(shipTrackPoint);
 	}
 
-	@Override
+	@Override 
 	public List<ShipTrackPoint> trackPointsOfShip(Long shipId) {
 		return shipTrackPointDAO.findTrackPointsOfShip(shipId);
 	}
 
-	@Override
+	@Override 
 	public void deleteAllTracksOfShip(Long shipId) {
 		shipTrackPointDAO.deleteAllTracksOfShip(shipId);
 	}

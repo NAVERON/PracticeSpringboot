@@ -19,21 +19,21 @@ import com.eron.practice.model.constant.CommonConstant;
 import com.eron.practice.service.UserService;
 import com.eron.practice.utils.MailClientUtils;
 import com.eron.practice.utils.RandomGeneratorUtils;
-
+import com.eron.practice.utils.RedisClusterUtils;
 
 
 @Service
 public class UserServiceImpl implements UserService {
 	
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
-
+	
 	@Resource 
 	// @Qualifier(value = "") 今后需要更多实现 添加qualifier 
 	private UserDAO userDAO;
 	@Resource 
 	private MailClientUtils mailClient;
 	@Resource 
-	private StringRedisTemplate stringRedisTemplate;
+	private RedisClusterUtils redisClusterUtils;
 	@Resource
 	private CacheStore<User> loginUserCache;  // 缓存登录的用户对象
 	
@@ -110,31 +110,25 @@ public class UserServiceImpl implements UserService {
 		log.info("假装邮件已经发送 : {}", emailContent);
 		
 		// redis 设置
-		Boolean redisStatus = stringRedisTemplate.opsForValue().setIfAbsent(CommonConstant.REDIS_VERIFY_PREFIX + emailAddress, verifyCode, 5, TimeUnit.MINUTES);
+		String redisResult = redisClusterUtils.setRedisEmailVerifyCode(emailAddress, verifyCode, 5, TimeUnit.MINUTES);
 		
-		if(redisStatus) {
-			return verifyCode;
-		} else {
-			return "ERROR";
-		}
+		log.warn("redisResult : {}", redisResult);
+		return redisResult;
 		
 	}
 
 	@Override
 	public User registCheckProcess(String userName, String password, String registEmail, String verifycationCode) {
 		User registedUser = null;
-		String key = CommonConstant.REDIS_VERIFY_PREFIX + registEmail;
 		
 		// redis 检查
-		if(verifycationCode.equals(stringRedisTemplate.opsForValue().get(key))) {
+		if(redisClusterUtils.checkRedisEmailVerifyCode(registEmail, verifycationCode)) {
 			log.info("验证通过, 注册成功");
 			// 验证码通过 
 			// 构造用户对象 
 			registedUser = User.createBuilder().name(userName).password(password).registEmail(registEmail).build();
 			registedUser = userDAO.save(registedUser);
 			log.info("registed User info : {}", registedUser);
-			
-			stringRedisTemplate.delete(key);
 		}
 		
 		return registedUser;

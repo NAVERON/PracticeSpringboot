@@ -2,13 +2,13 @@ package com.eron.practice.model.constant;
 
 public enum ResponseCodeEnum {
 	
-	SUCESS(200, "成功"),
-	FAIL(-1, "失败"),
+	SUCESS(200, "成功"), 
+	FAIL(-1, "失败"), 
 	ERROR_400(400, "请求错误"), 
 	ERROR_404(404, "资源不存在"), 
-	ERROR_500(500, "服务器异常"),
+	ERROR_500(500, "服务器异常"), 
 	// 业务编码 
-	PARAM_ERROR(-2, "参数错误");
+	PARAM_ERROR(-2, "参数错误"); 
 	// 更多业务编码 
 
 	private Integer code;

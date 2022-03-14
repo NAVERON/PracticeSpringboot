@@ -55,7 +55,14 @@ public class ShipView {
 			return modelAndView;
 		}
 		List<ShipTrackPoint> shipTracks = shipTrackService.trackPointsOfShip(shipId);
-		String shipTracksString = JsonUtils.toJsonString(shipTracks);
+		String shipTracksString = "";
+		try {
+			shipTracksString = JsonUtils.toJsonString(shipTracks);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			log.error("JsonUtils.toJsonGZIP ERROR : {} ==> {}", shipTracks, e.toString());
+			e.printStackTrace();
+		}
 		log.info("转化后的对象 : {}", shipTracksString);  // 后期船舶的轨迹点数量会急剧增大,需要考虑采用措辞分批的方式, 或者js获取队列内容  
 		
 		modelAndView.addObject("user", cachedUser);

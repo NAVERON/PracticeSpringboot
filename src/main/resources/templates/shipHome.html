@@ -57,29 +57,24 @@ ShipMMSI : <span th:text = "${ship.mmsi}">ship mmsi</span> </br>
 		// var pixels = id.data;
 		
 		shipTracks.forEach(track => {
-			console.log("每个对象打印 : " + track.ShipId + "=" + track.CreateTime);
+			console.log(track);
+			console.log("每个对象打印 : " + track.shipId + "=" + track.createTime);
+			
+	         /*
+            var x = track.Latitude;
+            var y = track.Longitude;
+            var r = Math.floor(Math.random() * 256);
+            var g = Math.floor(Math.random() * 256);
+            var b = Math.floor(Math.random() * 256);
+            var off = (y * id.width + x) * 4;
+            pixels[off] = r;
+            pixels[off + 1] = g;
+            pixels[off + 2] = b;
+            pixels[off + 3] = 255;
+            */
+			ctx.fillStyle = "#ff0000";  // 填充颜色 
+            ctx.fillRect(track.latitude, track.longitude, 5, 5);
 		});
-		
-		ctx.fillStyle = "#ff0000";  // 填充颜色 
-		for (var i = 0; i < shipTracks.length; ++i) {
-			var track = shipTracks[i];
-			console.log(track.Id + " : " + track.Latitude + "," + track.Longitude);
-			/*
-			var x = track.Latitude;
-			var y = track.Longitude;
-			var r = Math.floor(Math.random() * 256);
-			var g = Math.floor(Math.random() * 256);
-			var b = Math.floor(Math.random() * 256);
-			var off = (y * id.width + x) * 4;
-			pixels[off] = r;
-			pixels[off + 1] = g;
-			pixels[off + 2] = b;
-			pixels[off + 3] = 255;
-			*/
-			
-			
-			ctx.fillRect(track.Latitude, track.Longitude, 5, 5);
-		}
 		// ctx.putImageData(id, 0, 0);
 		
 	}

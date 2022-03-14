@@ -59,7 +59,7 @@ public class MailClientUtils {
 	 * @param subject
 	 * @param content
 	 */
-	public static void senmHTMLMail(String from, String to, String subject, String content) {
+	public void senmHTMLMail(String from, String to, String subject, String content) {
 		// html 格式邮件发送 
 	}
 	
@@ -70,7 +70,7 @@ public class MailClientUtils {
 	 * @param subject
 	 * @param content
 	 */
-	public static void sendAttachmentMail(String from, String to, String subject, String content) {
+	public void sendAttachmentMail(String from, String to, String subject, String content) {
 		// 带附件的邮件 
 	}
 	
@@ -79,3 +79,8 @@ public class MailClientUtils {
 	// 使用队列异步发送 
 	
 }
+
+
+
+
+

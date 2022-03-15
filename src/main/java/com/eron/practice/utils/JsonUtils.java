@@ -72,6 +72,11 @@ public class JsonUtils {
 		
 		return result;
 	}
+	public static <T> T fromJsonString(String originJson, Class<T> classOfT) {
+		T objT = getGson().fromJson(originJson, classOfT);
+		
+		return objT;
+	}
 
 	public static boolean isValidJson(String content) {
 		Object parsedValue = null;

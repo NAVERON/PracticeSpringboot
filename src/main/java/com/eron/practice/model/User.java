@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.apache.el.parser.AstFalse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -50,7 +49,7 @@ public class User implements Cloneable {
 	
 	public User(String name, String password, String registEmail) {
 		this.name = name;
-		this.password = DigestUtils.md5DigestAsHex(password.getBytes());
+		this.password = password;
 		this.registEmail = registEmail;
 	}
 	

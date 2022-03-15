@@ -33,12 +33,12 @@ public class ShipTrackPoint implements Cloneable {
 	private Float rotationAcceleration; // 转向角加速度 
 	@Column(name = "sog_speed")
 	private Float sogSpeed; // 对地船舶速度 
-	@Column(name = "cog_cource")
-	private Float cogCource; // 对地航向 
+	@Column(name = "cog_cource")  // 这个单词写错了  就不修改了  cog_course
+	private Float cogCourse; // 对地航向 
 	@Column(name = "speed")
 	private Float speed; // 船速 speed - 流速 = sogSpeed 
 	@Column(name = "cource")
-	private Float cource; // 船向 cource = cogCource 
+	private Float course; // 船向 cource = cogCource 
 	@Column(name = "rudder")
 	private Float rudder; // 船舶舵角 
 	@Column(name = "lng")
@@ -59,9 +59,9 @@ public class ShipTrackPoint implements Cloneable {
 		this.shipId = builder.shipId;
 		this.rotationAcceleration = builder.rotationAcceleration;
 		this.sogSpeed = builder.sogSpeed;
-		this.cogCource = builder.cogCource;
+		this.cogCourse = builder.cogCourse;
 		this.speed = builder.speed;
-		this.cource = builder.cource;
+		this.course = builder.course;
 		this.rudder = builder.rudder;
 		this.longitude = builder.longitude;
 		this.latitude = builder.latitude;
@@ -77,9 +77,9 @@ public class ShipTrackPoint implements Cloneable {
 		private Long shipId; // 船舶id @See Ship  必须赋值 
 		private Float rotationAcceleration = 0F; // 转向角加速度 
 		private Float sogSpeed = 0F; // 对地船舶速度 
-		private Float cogCource = 0F; // 对地航向 
+		private Float cogCourse = 0F; // 对地航向 
 		private Float speed = 0F; // 船速 speed - 流速 = sogSpeed 
-		private Float cource = 0F; // 船向 cource = cogCource 
+		private Float course = 0F; // 船向 cource = cogCource 
 		private Float rudder = 0F; // 船舶舵角 
 		private Float longitude = 0F; // 经度 
 		private Float latitude = 0F; // 纬度 
@@ -98,16 +98,16 @@ public class ShipTrackPoint implements Cloneable {
 			this.sogSpeed = sogSpeed;
 			return this;
 		}
-		public Builder cogCource(Float cogCource) {
-			this.cogCource = cogCource;
+		public Builder cogCourse(Float cogCourse) {
+			this.cogCourse = cogCourse;
 			return this;
 		}
 		public Builder speed(Float speed) {
 			this.speed = speed;
 			return this;
 		}
-		public Builder cource(Float cource) {
-			this.cource = cource;
+		public Builder course(Float course) {
+			this.course = course;
 			return this;
 		}
 		public Builder rudder(Float rudder) {
@@ -146,9 +146,9 @@ public class ShipTrackPoint implements Cloneable {
 		this.shipId = another.shipId;
 		this.rotationAcceleration = another.rotationAcceleration;
 		this.sogSpeed = another.sogSpeed;
-		this.cogCource = another.cogCource;
+		this.cogCourse = another.cogCourse;
 		this.speed = another.speed;
-		this.cource = another.cource;
+		this.course = another.course;
 		this.rudder = another.rudder;
 		this.longitude = another.longitude;
 		this.latitude = another.latitude;
@@ -192,12 +192,12 @@ public class ShipTrackPoint implements Cloneable {
 		this.sogSpeed = sogSpeed;
 	}
 
-	public Float getCogCource() {
-		return cogCource;
+	public Float getCogCourse() {
+		return cogCourse;
 	}
 
-	public void setCogCource(Float cogCource) {
-		this.cogCource = cogCource;
+	public void setCogCourse(Float cogCourse) {
+		this.cogCourse = cogCourse;
 	}
 
 	public Float getSpeed() {
@@ -208,12 +208,12 @@ public class ShipTrackPoint implements Cloneable {
 		this.speed = speed;
 	}
 
-	public Float getCource() {
-		return cource;
+	public Float getCourse() {
+		return course;
 	}
 
-	public void setCource(Float cource) {
-		this.cource = cource;
+	public void setCourse(Float course) {
+		this.course = course;
 	}
 
 	public Float getRudder() {
@@ -251,7 +251,7 @@ public class ShipTrackPoint implements Cloneable {
 	@Override
 	public String toString() {
 		return "ShipTrackPoint [id=" + id + ", shipId=" + shipId + ", rotationAcceleration=" + rotationAcceleration
-				+ ", sogSpeed=" + sogSpeed + ", cogCource=" + cogCource + ", speed=" + speed + ", cource=" + cource
+				+ ", sogSpeed=" + sogSpeed + ", cogCource=" + cogCourse + ", speed=" + speed + ", cource=" + course
 				+ ", rudder=" + rudder + ", longitude=" + longitude + ", latitude=" + latitude + ", createTime="
 				+ createTime + "]";
 	}

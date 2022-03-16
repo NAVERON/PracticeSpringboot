@@ -51,6 +51,7 @@
 ```shell
 MysqlDataTruncation: Data truncation: Data too long for column 'call_number' at row 1
 ```
+18. 注意redis中`setIfPresent`和`setIfAbsent`的区别  absent 如果不存在设置返回true, 如果已经有了, false; present 已经有了覆盖, true, 如果没有 返回false  
 
 
 # 技术测验  

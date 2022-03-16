@@ -25,7 +25,6 @@ public class SimpleTestScheduler {
 	@Scheduled(fixedDelay = 10 * 1000) 
 	public void testSchedule() {
 		log.info("test scheduler annotation, 生成随机的用户, 提供测试用例");
-		
 	}
 }
 

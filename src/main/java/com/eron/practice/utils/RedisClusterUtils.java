@@ -27,9 +27,12 @@ public class RedisClusterUtils {
 	
 	// redis 缓存注册验证码
 	public String setRedisEmailVerifyCode(String email, String verifyCode, int expiryDuration, TimeUnit timeUnit) {
-		Boolean status = stringRedisTemplate.opsForValue().setIfPresent(CommonConstant.REDIS_VERIFY_PREFIX + email, verifyCode, expiryDuration, timeUnit);
-				
+		
+		Boolean status = stringRedisTemplate.opsForValue().setIfAbsent(CommonConstant.REDIS_VERIFY_PREFIX + email, verifyCode, expiryDuration, timeUnit);
+		log.warn("redis set status : {}", status);
+		
 		if(!status) {
+			log.info("设置时已经有值, 说明重复注册了, 使用之前的验证码即可, 等待自动过期 params ==>\n{}, {}", email, verifyCode);
 			return CommonConstant.REDIS_EMAIL_VERIFY_ERROR_PREFIX + verifyCode;
 		}
 		

@@ -7,15 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-
-
-@Controller
-@RequestMapping(value = "")
+@Controller 
+@RequestMapping(value = "") 
 public class BaseAndBeginView { 
-
+	
 	private static final Logger log = LoggerFactory.getLogger(BaseAndBeginView.class);
 	
-	@GetMapping(value = "")
+	@GetMapping(value = "") 
 	public ModelAndView baseHome(ModelAndView modelAndView) {
 		modelAndView.setViewName("index");
 		return modelAndView;

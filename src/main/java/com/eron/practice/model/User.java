@@ -1,6 +1,8 @@
 package com.eron.practice.model;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,18 +10,25 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.DigestUtils;
 
 
 @Entity 
 @Table(name = "user") 
-public class User implements Cloneable {
+public class User implements Cloneable, UserDetails {
 	
+	// 序列码 串行化 
+	private static final long serialVersionUID = -3850621589763194008L;
+
 	private static final Logger log = LoggerFactory.getLogger(User.class);
     
 	@Id
@@ -32,13 +41,47 @@ public class User implements Cloneable {
 	@NonNull
 	private String password; // 用户设定的密码 md5运算  **必须赋值**
 	@Column(name = "regist_email")
-	@NonNull
+	@NotNull 
+	@Email 
 	private String registEmail; // 注册邮箱  **必须赋值** 
 	@Column(name = "create_time", insertable = false, updatable = false)
 	private LocalDateTime createTime; // 创建时间
 	@Column(name = "update_time", insertable = false, updatable = false)
 	private LocalDateTime updateTime; // 最近一次修改属性的时间 
 	
+	/*************************************************************************/
+	// ==== userdetails 接口方法实现 
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public String getUsername() {
+		return this.name;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+	/**************************************************************************/
+
 	@Deprecated
 	public User() {
 		// 默认值处理  一般情况下不使用

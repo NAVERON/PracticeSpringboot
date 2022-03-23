@@ -52,6 +52,21 @@
 MysqlDataTruncation: Data truncation: Data too long for column 'call_number' at row 1
 ```
 18. 注意redis中`setIfPresent`和`setIfAbsent`的区别  absent 如果不存在设置返回true, 如果已经有了, false; present 已经有了覆盖, true, 如果没有 返回false  
+19. @ConfigurationProperties 的使用, 直接获取系列公共前缀的对象, 可以快速获取配置参数; 驼峰命名 properties中使用`-`连接, 如对象使用`userName`, 配置文件中就需要使用`user-name`, 或者`userName` / `user_name` / `USER_NAME`  
+20. 注解`@RequestMapping` 使用path = xxx 更直观, 以后直接使用path  
+21. 关于用户注册过程中密码加密的想法 在前端加密和后端加密是一样的, 前端是可以直接获取原始密码的, 方便起见以后直接放在后端加密; 好处 加密方式多样, 灵活的变化和解密耦合(如果加密方式变化 解密也需要变化, 兼容更多的加密规则)  
+22. jwt token 五状态登陆技术, json web token 语言无关的身份认证框架, 结构分为header<算法和格式声明>, payload <定制内容，主要载荷, 使用Base64Url 编码>, sign<签名 >  
+我的理解 : JWT 使用计算机算力解决无状态登陆 restful风格接口 分布式 内存session增长的问题  
+
+>  iss (issuer)：表示签发人  
+> exp (expiration time)：表示token过期时间  
+> sub (subject)：主题  
+> aud (audience)：受众  
+> nbf (Not Before)：生效时间  
+> iat (Issued At)：签发时间  
+> jti (JWT ID)：编号  
+
+
 
 
 # 技术测验  
@@ -62,6 +77,7 @@ MysqlDataTruncation: Data truncation: Data too long for column 'call_number' at 
 - properties 配置覆盖  配置数据库, redis, 邮箱  
 - logback 配置日志方式 `spring-logback.xml`配置  
 - JPA 的使用， mybatis后面再测试使用  
+- 使用webSecurity 安全验证 `curl -i --user wangyulong:testing -X GET localhost:8080/api/v1/users`  
 
 
 
@@ -75,7 +91,7 @@ MysqlDataTruncation: Data truncation: Data too long for column 'call_number' at 
 
 
 
-## RPC,gRPC使用
+## RPC, gRPC使用
 
 
 

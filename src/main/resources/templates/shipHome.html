@@ -22,6 +22,7 @@ ShipName : <span th:text = "${ship.name}">shipName</span> </br>
 ShipMMSI : <span th:text = "${ship.mmsi}">ship mmsi</span> </br>
 
 
+</br> <a th:href = "@{/page/v1/users/{userId}(userId = ${user.id})}">返回用户主页</a> </br>
 </br> 当前船舶轨迹点 </br>
 
 <canvas id="myCanvas" width="1000" height="800"></canvas>
@@ -73,7 +74,7 @@ ShipMMSI : <span th:text = "${ship.mmsi}">ship mmsi</span> </br>
             pixels[off + 3] = 255;
             */
 			ctx.fillStyle = "#ff0000";  // 填充颜色 
-            ctx.fillRect(track.latitude, track.longitude, 5, 5);
+            ctx.fillRect(track.latitude, track.longitude, 10, 10);
 		});
 		// ctx.putImageData(id, 0, 0);
 		

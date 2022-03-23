@@ -25,6 +25,10 @@ public interface UserDAO extends JpaRepository<User, Long> {
 	@Query(value = "select u from User u where u.password = ?2 and (u.name = ?1 or u.registEmail = ?1) " ) 
 	public User getUserByPasswordAndNameOrEmail(String userName, String password);
 	
+	@Nullable 
+	@Query(value = "select u from User u where u.name = ?1 or u.registEmail = ?1 ")
+	public Optional<User> findByUserNameOrRegistEmail(String registEmail);
+	
 }
 
 

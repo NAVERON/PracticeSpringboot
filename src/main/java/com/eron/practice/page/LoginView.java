@@ -24,7 +24,7 @@ import com.eron.practice.utils.ResponseUtils;
 
 
 @Controller 
-@RequestMapping(value = "page/v1") 
+@RequestMapping(value = "page/v1")   // path = "page/v1" 
 public class LoginView {
 	
 	private static final Logger log = LoggerFactory.getLogger(LoginView.class);
@@ -33,7 +33,8 @@ public class LoginView {
 	private UserService userService;
 	
 	@GetMapping(value = "login")
-	public ModelAndView login(ModelAndView modelAndView, @RequestParam(value = "message", required = false) String message) {
+	public ModelAndView login(ModelAndView modelAndView, 
+			@RequestParam(value = "message", required = false) String message) {
 		modelAndView.addObject("message", message);
 		modelAndView.setViewName("login");
 		return modelAndView;
@@ -53,14 +54,14 @@ public class LoginView {
 	
 	@PostMapping(value = "doLogin")
 	public ModelAndView doLogin(ModelAndView modelAndView, 
-			@RequestParam(value = "username", required = true) String userName, 
+			@RequestParam(value = "username", required = true) String username, 
 			@RequestParam(value = "password", required = true) String password) {
 		
 		// 正确则构造user对象 
-		log.info("doLogin --> [ nusername : {}, password : {} ]", userName, password);
+		log.info("doLogin --> [ nusername : {}, password : {} ]", username, password);
 		
 		// 使用用户名称 可以是用户名/注册邮箱 
-		User verifiedUser = userService.userLoginCheck(userName, password);
+		User verifiedUser = userService.userLoginCheck(username, password);
 		log.info("登陆查询结果 : {}", verifiedUser);
 		
 		// 没有用户信息, 表示用户名/密码错误  或  用户没有注册 

@@ -2,9 +2,11 @@ package com.eron.practice.service;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import com.eron.practice.model.User;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
 	/**
 	 *  列出所有用户 

@@ -10,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.eron.practice.jpadao.UserDAO;
@@ -47,6 +50,15 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// 这里的用户名称设置为注册邮箱名称   ==  业务关系转换   用户名称或者邮箱均可 名称可能会重复 
+		// find by username or registmail 
+		User user = userDAO.findByUserNameOrRegistEmail(username).orElse(null);
+		
+		return user;
+	}
+
 	public User newUser(User user) {
 		// 注册新用户  检查邮箱是否重复
 

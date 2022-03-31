@@ -24,7 +24,7 @@ public class CacheStoreBeans {
 	 */
 	@Bean(value = "loginUserCache")
 	@Lazy(value = true)
-	public CacheStore<User> loginUserCache() {
+	public CacheStore<User> loginUserCache() {  // 使用bean默认为方法名称  Bean 属性value可以自定义bean调用名称 
 		return new CacheStore<>(10, TimeUnit.MINUTES);
 	}
 	

@@ -10,12 +10,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 
 @SpringBootApplication // = AutoConfiguration(EnableConfiguration)  ComponentScan  
 @EnableScheduling  // 启动可定时注解 Scheduled 
+@EnableKafka 
 // mybatis 注解配置  Mappercan 或者 Mapper 
 public class PracticeSpringbootApplication implements CommandLineRunner { 
 	

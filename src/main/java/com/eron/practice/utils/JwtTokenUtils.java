@@ -12,6 +12,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
@@ -27,13 +29,15 @@ import com.eron.practice.config.ConfigProperties;
 
 
 @Component 
+@ConfigurationProperties(prefix = "spring.auth0.jwt")  // 变量少, 不单独出来  直接用@Value 
+// @PropertySource(value = "")  // 设置自定义属性的来源文件 
 public class JwtTokenUtils {
 	
 	// 请求头 Authorization: Bearer <token> 
-	private final Long JWT_TOKEN_VALIDITY = 5 * 60 * 60L; //unit = s  
-	private final String TOKEN_HEADER = "Authorization";
-	private final String TOKEN_PREFIX = "Bearer ";
-	private final String TOKEN_SECRET = "wangyulong";
+	private Long TOKEN_VALIDITY = 5 * 60 * 60L; //unit = s  
+	private String TOKEN_HEADER = "Authorization";
+	private String TOKEN_PREFIX = "Bearer ";
+	private String TOKEN_SECRET = "wangyulong";
     
     private RSAPublicKey publicKey = null;//Get the key instance
     private RSAPrivateKey privateKey = null;//Get the key instance

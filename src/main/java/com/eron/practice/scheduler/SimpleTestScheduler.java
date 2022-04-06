@@ -30,6 +30,8 @@ public class SimpleTestScheduler {
     */
 	@Scheduled(fixedDelay = 60 * 1000) 
 	public void testSchedule() {
+		
+		// Kafka测试 
 		log.info("test scheduler annotation, 生成随机的用户, 提供测试用例");
 		
 		log.info("kafka testing");

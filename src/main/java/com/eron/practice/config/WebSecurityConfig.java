@@ -70,8 +70,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			//.and().formLogin().permitAll()
             /** 允许配置异常处理。可以自己传值进去 使用WebSecurityConfigurerAdapter时，将自动应用此WebSecurityConfigurerAdapter 。*/
             .and().exceptionHandling()
-			.and().csrf().disable()   // cross site request 
-			.httpBasic();
+			// .and().csrf().disable()   // cross site request 
+			.and().httpBasic();
 		
 	}
 	

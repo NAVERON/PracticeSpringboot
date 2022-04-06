@@ -66,6 +66,7 @@ MysqlDataTruncation: Data truncation: Data too long for column 'call_number' at 
 > iat (Issued At)：签发时间  
 > jti (JWT ID)：编号  
 
+23. kafka的简单使用template完成测试, 今后需要深入了解使用方法, 理论有一个大致的认识  
 
 
 
@@ -83,21 +84,39 @@ MysqlDataTruncation: Data truncation: Data too long for column 'call_number' at 
 
 ## Redis
 
+命令行的使用, 基本数据结构  
 
 
 
 ## Zookeeper 
 
+> 需要实验实现zookeeper作为配置中心, 读取配置数据, 并监听配置数据的变化  
+
+
+## Kafka 基础
+
+当前版本依赖于zookeeper, 注意端口号的设置, 了解整个bin目录的结构, 配置文件的设置含义等...  
 
 
 
 ## RPC, gRPC使用
+
+单独测试, 当前只是简单的测试验证, 可以进行不同项目的通信  
+如果要深入使用, 需要完成不同工程的模块化
+
+- 接口工程, 定义统一的通信数据格式和服务API  
+- 调用服务端, 实现接口的实际动作  
+- 客户端调用rpc, 实现调用实现的服务端  
+
+> 这里面还可以改进的地方 : 客户端并不能主动的直到接口定义, 如果有服务注册发现就好了  
+> 每个服务实现方注册自己的实现, 客户端根据需要决定调用哪一种实现  
 
 
 
 
 ## themeleaf 
 
+已经简单使用, 与JSP类似, 在html中插入标记语言 `${xxx}`, 写法上类似, thymeleaf的好处是, 直接将变量写到 tag属性中, 没有变量实际传入不会报错, 指挥显示默认值, 前端友好  
 
 
 

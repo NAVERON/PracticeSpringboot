@@ -24,7 +24,7 @@ import com.eron.practice.service.UserService;
  */
 @Configuration 
 @EnableWebSecurity 
-@EnableGlobalAuthentication 
+// @EnableGlobalAuthentication 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Resource 
@@ -66,12 +66,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			/** 映射任何请求 */
 			/** 指定任何经过身份验证的用户都允许使用URL。*/
 			.anyRequest().authenticated()
+			.and().httpBasic()
 			/** 指定支持基于表单的身份验证 */
 			//.and().formLogin().permitAll()
             /** 允许配置异常处理。可以自己传值进去 使用WebSecurityConfigurerAdapter时，将自动应用此WebSecurityConfigurerAdapter 。*/
-            .and().exceptionHandling()
-			// .and().csrf().disable()   // cross site request 
-			.and().httpBasic();
+            // .and().exceptionHandling()
+			.and().csrf().disable()   // cross site request 
+			;
 		
 	}
 	

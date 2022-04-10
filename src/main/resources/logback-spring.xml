@@ -45,11 +45,13 @@
     <springProfile name = "dev">
     
         <!-- 自定义日志方式, 对某个包或类单独定义appender -->
+        <!--  
         <logger name = "com.eron.practice.api" level = "INFO" additivity = "false">
             <appender-ref ref = "FILE"></appender-ref> 
         </logger>
+        -->
     
-        <root level = "DEBUG">
+        <root level = "INFO">
             <appender-ref ref = "STDOUT"></appender-ref>
         </root>
     </springProfile>

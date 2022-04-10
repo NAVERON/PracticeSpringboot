@@ -22,6 +22,7 @@
 	<properties>
 	    <!-- 提供pom属性 -->
 		<java.version>17</java.version>
+		<zookeeper.curator.version>5.2.1</zookeeper.curator.version>
 	</properties>
 
 	<dependencies>
@@ -38,7 +39,27 @@
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
         </dependency>
-        
+        <!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper -->
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.curator/curator-recipes -->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>${zookeeper.curator.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.curator/curator-framework -->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>${zookeeper.curator.version}</version>
+        </dependency>
+
+
+
         <!-- 登陆验证 -->
         <!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-spring -->
         <!-- oauth2 标准 -->

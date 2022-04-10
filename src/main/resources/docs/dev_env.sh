@@ -13,7 +13,7 @@
 # ubuntu 开发环境一键启动全部环境 
 sudo systemctl start mysql.service 
 ~/bin/env/redis-6.2.6/src/redis-server ~/bin/env/redis-6.2.6/redis.conf 
-~/bin/env/apache-zookeeper-3.7.0-bin/bin/zkServer.sh start  # 停止使用stop 
+~/bin/env/apache-zookeeper-3.7.0-bin/bin/zkServer.sh start 
 ~/bin/env/kafka_2.13-3.0.0/bin/kafka-server-start.sh ~/bin/env/kafka_2.13-3.0.0/config/server.properties
 
 

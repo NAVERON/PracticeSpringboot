@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eron.practice.model.ResponseEntity;
+import com.eron.practice.model.BusinessResponseEntity;
 import com.eron.practice.utils.ResponseUtils;
 import com.eron.practice.utils.ZookeeperUtils;
 
@@ -32,7 +32,7 @@ public class CommonCloudConfigApi {
 	private static final String nodePath = "/config";
 	
 	@GetMapping(value = "config/{configName}") 
-	public ResponseEntity<Object> getCurrentConfig(@PathVariable(value = "configName") String configName){
+	public BusinessResponseEntity<Object> getCurrentConfig(@PathVariable(value = "configName") String configName){
 		log.info("request CommonCloudConfigApi -> getCurrentConfig");
 		
 		try {
@@ -46,7 +46,7 @@ public class CommonCloudConfigApi {
 	}
 	
 	@PostMapping(value = "config/{configName}") 
-	public ResponseEntity<Object> createNewConfig(@PathVariable(value = "configName") String configName, 
+	public BusinessResponseEntity<Object> createNewConfig(@PathVariable(value = "configName") String configName, 
 			@RequestBody String config) {
 		log.info("request CommonCloudConfigApi -> createNewConfig, configName -> {}, config data -> {}", configName, config);
 		
@@ -64,7 +64,7 @@ public class CommonCloudConfigApi {
 	}
 	
 	@DeleteMapping(value = "config/{configName}") 
-	public ResponseEntity<Object> deleteConfig(@PathVariable(value = "configName") String configName) {
+	public BusinessResponseEntity<Object> deleteConfig(@PathVariable(value = "configName") String configName) {
 		
 		log.info("request CommonCloudConfigApi -> deleteConfig, configName -> {}", configName);
 		

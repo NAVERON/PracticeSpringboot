@@ -4,7 +4,7 @@ package com.eron.practice.model.constant;
 public enum RedisResultEnum {
 	
 	// boolean + message --> boolean = final status, message = business things
-	LOCK_SUCCESS(Boolean.TRUE, "加锁成功"), 
+	LOCK_SUCCESS(Boolean.TRUE, "获取锁成功"), 
 	LOCK_FAIL(Boolean.TRUE, "加锁失败"), 
 	RELEASE_SUCESS(Boolean.TRUE, "释放锁成功"), 
 	RELEASE_FAIL(Boolean.FALSE, "解锁失败");

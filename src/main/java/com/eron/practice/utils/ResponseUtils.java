@@ -1,6 +1,6 @@
 package com.eron.practice.utils;
 
-import com.eron.practice.model.ResponseEntity;
+import com.eron.practice.model.BusinessResponseEntity;
 import com.eron.practice.model.constant.ResponseCodeEnum;
 
 
@@ -8,8 +8,8 @@ import com.eron.practice.model.constant.ResponseCodeEnum;
 
 public class ResponseUtils {
 	
-	public static ResponseEntity<Object> success(Object obj) {
-		ResponseEntity<Object> response = new ResponseEntity<Object>();
+	public static BusinessResponseEntity<Object> success(Object obj) {
+		BusinessResponseEntity<Object> response = new BusinessResponseEntity<Object>();
 		response.setCode(ResponseCodeEnum.SUCESS.getCode());
 		response.setMessage(ResponseCodeEnum.SUCESS.getMessage());
 		response.setData(obj);
@@ -17,12 +17,12 @@ public class ResponseUtils {
 		return response;
 	}
 	
-	public static ResponseEntity<Object> success() {
+	public static BusinessResponseEntity<Object> success() {
 		return ResponseUtils.success(null);
 	}
 	
-	public static ResponseEntity<Object> error(ResponseCodeEnum responseCodeEnum) {
-		ResponseEntity<Object> response = new ResponseEntity<Object>();
+	public static BusinessResponseEntity<Object> error(ResponseCodeEnum responseCodeEnum) {
+		BusinessResponseEntity<Object> response = new BusinessResponseEntity<Object>();
 		response.setCode(responseCodeEnum.getCode());
 		response.setMessage(responseCodeEnum.getMessage());
 		

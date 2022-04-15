@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eron.practice.model.CacheStore;
-import com.eron.practice.model.ResponseEntity;
+import com.eron.practice.model.BusinessResponseEntity;
 import com.eron.practice.model.User;
 import com.eron.practice.service.UserService;
 import com.eron.practice.utils.ResponseUtils;
@@ -42,7 +42,7 @@ public class LoginView {
 	
 	@PostMapping(value = "generateRandomEmailCode") 
 	@ResponseBody 
-	public ResponseEntity<Object> generateRandomEmailCode(@RequestParam(value = "email", required = true) String emailAddress) {
+	public BusinessResponseEntity<Object> generateRandomEmailCode(@RequestParam(value = "email", required = true) String emailAddress) {
 		// !!!!! 警示  post http请求中，如果后端使用requestParam 必须在url中拼接参数 
 		// 发送验证码邮件 
 		log.info("regist email generate random verifycation code. params : {}", emailAddress);

@@ -2,7 +2,7 @@ package com.eron.practice.model;
 
 import java.io.Serializable;
 
-public class ResponseEntity<T> implements Serializable {
+public class BusinessResponseEntity<T> implements Serializable {
 
 	private static final long serialVersionUID = -8568987804372679659L; 
 	

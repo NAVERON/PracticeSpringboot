@@ -6,24 +6,29 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import com.eron.practice.model.constant.CommonConstant;
-import com.eron.practice.model.constant.RedisResultEnum;
+import com.eron.practice.model.constant.LockStatusEnum;
 
 
-@Component
+@Component 
 public class RedisClusterUtils { 
 	
-	// 需要实现缓存邮箱严重呢个马的工具功能, 不用再在其他地方使用, 有关redis的工具功能全部封装在这里 
+	// 需要实现缓存邮箱验证的工具功能, 不用再在其他地方使用, 有关redis的工具功能全部封装在这里 
 	
 	private static final Logger log = LoggerFactory.getLogger(RedisClusterUtils.class);
 	
 	@Resource 
 	private StringRedisTemplate stringRedisTemplate;
+	
+	@Resource 
+	private RedissonClient redissonClient;
 	
 	// redis 缓存注册验证码
 	public String setRedisEmailVerifyCode(String email, String verifyCode, int expiryDuration, TimeUnit timeUnit) {
@@ -65,7 +70,7 @@ public class RedisClusterUtils {
 		}
 	};  // 自旋锁 重试次数 超过就跳出 
 	
-	public RedisResultEnum tryRedisLock(String key, int expiryDuration, TimeUnit timeUnit) {
+	public LockStatusEnum tryRedisLock(String key, int expiryDuration, TimeUnit timeUnit) {
 		Boolean isLocked = false;
 		if(threadLock.get() == null) {
 			//还没有加锁
@@ -93,10 +98,10 @@ public class RedisClusterUtils {
 		}
 		
 		// 返回String表达更多的锁状态和额外信息 
-		return isLocked ? RedisResultEnum.LOCK_SUCCESS : RedisResultEnum.LOCK_FAIL;
+		return isLocked ? LockStatusEnum.LOCK_SUCCESS : LockStatusEnum.LOCK_FAIL;
 	}
 	
-	public RedisResultEnum releaseRedisLock(String key) {
+	public LockStatusEnum releaseRedisLock(String key) {
 		// 获取当前线程的threadLock 
 		// 如果没有加锁直接解锁呢 ? 应当做成无影响 返回正常状态 
 		String uuid = threadLock.get() == null ? "" : threadLock.get(); 
@@ -115,11 +120,24 @@ public class RedisClusterUtils {
 				lockTimes.set(count);  // 加锁次数 - 1 
 				retryLockTimes.set(CommonConstant.REDIS_RETRYLOCK_TIMES);  // 重置自自旋锁  次数
 			}
-
-			return RedisResultEnum.RELEASE_SUCESS;
+			return LockStatusEnum.RELEASE_SUCESS;
 		}
 		// 释放Redis分布式锁  没有加过锁 = 释放失败, 不是当前线程的加锁释放 = 失败  
-		return RedisResultEnum.RELEASE_FAIL;
+		return LockStatusEnum.RELEASE_FAIL;
+	}
+	
+	
+	
+	// 使用redission实现的分布式锁  for Testing ...
+	// 多节点部署情况下  如果宕机, 会导致锁丢失, 所以使用RedLock 发送多个设置命令到多个redis节点, 半数以上返回表示设置成功 
+	public void tryRedissonLock(String lockKey) {
+	    RLock locker = redissonClient.getLock(lockKey);
+	    locker.lock();
+	    
+	    log.info("RedissonLock 获取到锁");
+	    log.info("所得状态获取 -> {}, {}, {}", locker.getHoldCount(), locker.isHeldByCurrentThread(), locker.isLocked());
+	    
+	    locker.unlock();  // 解锁 
 	}
 	
 }

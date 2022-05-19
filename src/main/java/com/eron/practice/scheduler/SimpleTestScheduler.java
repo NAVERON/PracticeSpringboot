@@ -21,6 +21,7 @@ public class SimpleTestScheduler {
 	
 	private static final Logger log = LoggerFactory.getLogger(SimpleTestScheduler.class);
 	
+	// 暂时用作kafka测试 
 	@Resource 
 	private KafkaTemplate<String, String> kafkaTemplate;
 
@@ -36,7 +37,7 @@ public class SimpleTestScheduler {
 	    * * * * * *
     */
 	@Scheduled(fixedDelay = 60 * 1000) 
-	public void testSchedule() {  // kafka生产者 
+	public void kafkaProductorPush() {  // kafka生产者 
 		
 		// Kafka测试 
 		log.info("test scheduler annotation, 生成随机的用户, 提供测试用例");
@@ -52,7 +53,6 @@ public class SimpleTestScheduler {
 				log.info("发送成功");
 			}
 		} catch (InterruptedException | ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -62,13 +62,11 @@ public class SimpleTestScheduler {
 
 			@Override
 			public void onFailure(Throwable ex) {
-				// TODO Auto-generated method stub
 				log.error("发送失败");
 			}
 
 			@Override
 			public void onSuccess(SendResult<String, String> result) {
-				// TODO Auto-generated method stub
 				log.info("发送成功");
 			}
 			
@@ -77,8 +75,8 @@ public class SimpleTestScheduler {
 	}
 	
 	// 监听kafka队列 
-	@KafkaListener(groupId = "xxx", topics = "topic")
-	public void kafkaListener(ConsumerRecord<String, String> consumer) {  // 继承实现自定义消息结构 
+	@KafkaListener(groupId = "xxx", topics = "topic")  // kafka 消费端 groupud消费组概念 topic 主题
+	public void kafkaCustomeDeal(ConsumerRecord<String, String> consumer) {  // 继承实现自定义消息结构 
 		log.info("接收的kafka信息 : {}", consumer.value());
 	}
 	

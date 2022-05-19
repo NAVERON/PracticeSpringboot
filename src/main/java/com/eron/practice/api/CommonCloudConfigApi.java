@@ -29,16 +29,15 @@ public class CommonCloudConfigApi {
 	@Resource 
 	private ZookeeperUtils zkUtils;
 
-	private static final String nodePath = "/config";
+	private static final String configPath = "/common/config";  // 设置功能前缀 
 	
 	@GetMapping(value = "config/{configName}") 
 	public BusinessResponseEntity<Object> getCurrentConfig(@PathVariable(value = "configName") String configName){
 		log.info("request CommonCloudConfigApi -> getCurrentConfig");
 		
 		try {
-			zkUtils.getDataOfZNode(nodePath + "/" + configName);
+			zkUtils.getDataOfZNode(configPath + "/" + configName);
 		} catch (UnsupportedEncodingException | KeeperException | InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -54,9 +53,10 @@ public class CommonCloudConfigApi {
 		log.info("转换成其他数据格式 => {}", configData);
 		
 		try {
-			zkUtils.createZNode(nodePath + "/" + configName, configData);
+		    // 判断是否存在 节点
+		    
+			zkUtils.createZNode(configPath + "/" + configName, configData);
 		} catch (KeeperException | InterruptedException | UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -69,9 +69,8 @@ public class CommonCloudConfigApi {
 		log.info("request CommonCloudConfigApi -> deleteConfig, configName -> {}", configName);
 		
 		try {
-			zkUtils.deleteZNode(nodePath + "/" + configName);
+			zkUtils.deleteZNode(configPath + "/" + configName);
 		} catch (InterruptedException | KeeperException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

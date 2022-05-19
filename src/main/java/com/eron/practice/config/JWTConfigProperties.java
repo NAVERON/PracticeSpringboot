@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration 
 @ConfigurationProperties(prefix = "spring.auth0.jwt") 
-public class ConfigProperties {
+public class JWTConfigProperties {
 	
 	public Long tokenValidity;  // com.eron.secret 
 	public String tokenHead;  // com.eron.test 

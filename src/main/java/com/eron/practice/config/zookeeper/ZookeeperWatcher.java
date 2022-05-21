@@ -1,6 +1,5 @@
 package com.eron.practice.config.zookeeper;
 
-
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.Watcher.Event.EventType;
@@ -10,9 +9,8 @@ import org.springframework.context.annotation.Configuration;
 
 
 
-
 @Configuration 
-public class ZookeeperWatcher implements Watcher { 
+public class ZookeeperWatcher implements Watcher {  // zookeeper节点的变化会被触发 
 	
 	private static final Logger log = LoggerFactory.getLogger(ZookeeperWatcher.class);
 
@@ -25,6 +23,8 @@ public class ZookeeperWatcher implements Watcher {
 		    log.info("节点发生删除事件 -> {}", event.getPath());
 		}else if(event.getType() == EventType.NodeDataChanged) {
 		    log.info("节点数据发生改变 -> {} ||=> {}", event.getPath());
+		}else if(event.getType() == EventType.NodeChildrenChanged) {
+			log.info("节点的孩子有变化 -> {} ||=> {}", event.getPath(), event.getState());
 		}
 		
 		

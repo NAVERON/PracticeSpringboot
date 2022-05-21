@@ -1,5 +1,8 @@
 package com.eron.practice.config.interceptor;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,7 +24,8 @@ public class AuthoritationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        log.info("AuthoritationInterceptor preHandle 执行handle之前/controller之前");
+        log.info("AuthoritationInterceptor preHandle 执行handle之前controller之前");
+        
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 

@@ -2,6 +2,8 @@ package com.eron.practice.utils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -19,6 +21,7 @@ import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -30,31 +33,46 @@ public class ZookeeperUtils {
 
     private static final Logger log = LoggerFactory.getLogger(ZookeeperUtils.class);
 
-    @Value(value = "${spring.zookeeper.server.url}")
-    private String serverUrl;
-    @Value(value = "${spring.zookeeper.connection.timeout}")
-    private Integer connectionTimeout;
-
-    @Resource
-    private ZookeeperWatcher zkWatcher;
+//    @Value(value = "${spring.zookeeper.server.url}")
+//    private String serverUrl;
+//    @Value(value = "${spring.zookeeper.connection.timeout}")
+//    private Integer connectionTimeout;
 
     private ZooKeeper zkClient = null; // 初始化后可以直接使用
+    
+    // 初始化对象直接生成zkclient连接
+    public ZookeeperUtils(@Value(value = "${spring.zookeeper.server.url}") String serverUrl, 
+    		@Value(value = "${spring.zookeeper.connection.timeout}") Integer connectionTimeout) throws IOException {
+    	log.info("初始化zookeeper客户端");
+        // 这里需要修正, 注册watcher应当使用注册dispatcher 应对不同的业务 
+    	this.zkClient = new ZooKeeper(serverUrl, connectionTimeout, new ZookeeperWatcher());
+    	log.info("zookeeper client stats : {}", this.zkClient.getState().toString());
+    }
+    
+    public ZooKeeper getClientInstance() {  // 获取zkclient实例 
+        return this.zkClient;
+    }
 
     @PostConstruct 
-    public void initialZkClient() throws IOException, InterruptedException, KeeperException {
-        this.zkClient = new ZooKeeper(serverUrl, connectionTimeout, zkWatcher);
-        // 这里需要修正, 注册watcher应当使用注册dispatcher 应对不同的业务
-        
-        Thread.sleep(1000);  //
-        
+    public void init() {  // 锁的实现需要提前部署好 
         // 判断锁节点路径是否存在  如果不存在则创建
-        Stat stat = this.zkClient.exists(this.exclusiveLockPath, false);
-        if(stat == null) {
-            String node = this.zkClient.create(this.exclusiveLockPath, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-            log.info("创建锁根节点 => {}", node);
-        }
-        
-        log.info("zookeeper client stats : {}", this.zkClient.getState().toString());
+		try {
+			Stat stat = this.zkClient.exists(this.exclusiveLockPath, false);
+	        if(stat == null) {
+	        	log.info("当前锁节点不存在， 需要手动创建"); 
+	        	// 实现多级节点的创建
+	            //String node = this.zkClient.create(this.exclusiveLockPath, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+	        	String node = this.creatMutiZNode(this.exclusiveLockPath);
+	        	log.info("创建锁根节点 => {}", node);
+	        }
+	        
+		} catch (KeeperException | InterruptedException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public void initPath() {
+    	// 对外提供创建多功能节点 
     }
 
     public List<String> getChildrenOfZNode(String nodePath) throws KeeperException, InterruptedException {
@@ -64,18 +82,57 @@ public class ZookeeperUtils {
         return all;
     }
 
-    public String createZNode(String nodePath, byte[] nodeData)
-            throws KeeperException, InterruptedException, UnsupportedEncodingException {
-        String x = new String(nodeData, "UTF-8");
-        log.info("检查是否没有变化 {}", x);
+    public String createZNodeWithData(String nodePath, byte[] nodeData) {
+        String createresult = "";  // 初始化
 
-        String createresult = this.zkClient.create(nodePath, nodeData, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-
-        log.info("create node result : {}", createresult);
+		try {
+			String x = new String(nodeData, "UTF-8");
+			log.info("检查是否没有变化 {}", x);
+			Stat stat = this.zkClient.exists(nodePath, false);
+			
+	        if(stat == null) {
+	        	// 肯呢个上一级节点不存在  这里简化处理， 不做多余判断 
+		        createresult = this.zkClient.create(nodePath, nodeData, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+		        log.info("create node result : {}", createresult);
+	        }
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (KeeperException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
         
         return createresult;
     }
-
+    
+    /**
+     * 一次性创建多级路径 不插入数据， 数据后续在插入
+     * 比如创建 /root/common/test/hello 一次性循环创建多级
+     * @param fullPath
+     * @return 创建节点的结果 
+     */
+    public String creatMutiZNode(String fullPath) {
+    	fullPath = fullPath.substring(1);  // 去除最前面的 ‘/’
+    	List<String> fullPathSplitList = Arrays.asList(fullPath.split("/"));  // 只需要读取 不修改 无影响
+    	
+    	StringBuilder partPath = new StringBuilder();  // 辅助路径层级迭代
+    	fullPathSplitList.forEach(s -> {  // 对于每个路径节点, 检查路径节点是否存在, 不存在则创建, 存在则进入下一个循环
+    		partPath.append("/").append(s);
+    		log.info("当前节点路径 检查 -> {}", partPath.toString());
+    		try {
+				Stat stat = this.zkClient.exists(partPath.toString(), false);
+				if(stat == null) {
+					String tmpPath = this.zkClient.create(partPath.toString(), new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+					log.info("创建新的节点 -> {}", tmpPath);
+				}
+			} catch (KeeperException | InterruptedException e) {
+				e.printStackTrace();
+			}
+    	});
+    	
+    	return partPath.toString();
+    }
     public String getDataOfZNode(String nodePath)
             throws KeeperException, InterruptedException, UnsupportedEncodingException {
         byte[] result = this.zkClient.getData(nodePath, true, null);
@@ -102,7 +159,23 @@ public class ZookeeperUtils {
         log.info("stat changed => {}", stat.toString());
     }
     
+    public void registZNodeWatcher(String path, Watcher watcher) {
+        // 实现注册监听功能 对外提供, 可以通过exists getchildren getdata方法调用时注册 watcher
+        try {
+            this.zkClient.exists(path, watcher);  // 节点注册监听只有1次 
+        } catch (KeeperException | InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
     
+    
+    /**
+     * 获取锁 排他锁 
+     * key 表示对不同的业务获取不同的锁, 不同业务获取锁不影响 
+     * @throws InterruptedException 
+     * @throws KeeperException 
+     */
     // zookeeper 实现分布式锁  在分布式系统中, 提供全局 唯一的协议锁 
     // 基于cruator实现和使用zookeeper基础实现
     private String exclusiveLockPath = "/common/exclusivelocker";  // 锁前缀
@@ -116,15 +189,8 @@ public class ZookeeperUtils {
                 log.info("节点被删除 -> {}", event.getPath());
             }
         }
-        
     };
     
-    /**
-     * 获取锁 排他锁 
-     * key 表示对不同的业务获取不同的锁, 不同业务获取锁不影响 
-     * @throws InterruptedException 
-     * @throws KeeperException 
-     */
     public LockStatusEnum tryexclusiveLock(String key) throws KeeperException, InterruptedException {
         // 加锁 创建临时有序节点  排他锁可以使用单个临时节点直接逻辑, 但是为了避免惊群效应, 使用临时有序子节点的方式
         String curLock = this.zkClient.create(this.exclusiveLockPath + "/" + commonLockPrefix, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL); 

@@ -24,6 +24,8 @@ public class WebContentFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         log.info("do filter sth for WebContentFilter - ");
+        
+        chain.doFilter(request, response);  // 执行才能通过 否则不能通过请求
     }
     
 

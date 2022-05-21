@@ -1,10 +1,12 @@
 package com.eron.practice.config;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.eron.practice.config.interceptor.AuthoritationInterceptor;
 
+@Configuration 
 public class WebBasicConfic implements WebMvcConfigurer {
 
     @Override

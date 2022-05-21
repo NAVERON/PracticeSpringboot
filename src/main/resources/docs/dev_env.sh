@@ -9,7 +9,7 @@
 # zookeeper zookeeperBin目录下 bin/zkServer.sh [--config <conf-dir>] {start|start-foreground|stop|version|restart|status|print-cmd} 
 # 可以显式的设置配置文件目录, 不需要指名文件, 会自动查找目录下zoo.cfg 
 # kafka 依赖于zookeeper, 注意port端口号的配置 
-# 进入kafkabin目录下  ./bin/kafka-server-start.sh ./config/server.properties 
+# 进入kafka bin目录下  ./bin/kafka-server-start.sh ./config/server.properties 
 
 # ubuntu 开发环境一键启动全部环境 
 sudo systemctl start mysql.service 
@@ -36,7 +36,7 @@ mysql redsi 使用systemctl start ... 启动
 
 
 
-
+#
 
 
 

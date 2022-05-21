@@ -63,7 +63,7 @@ public class CallOuterApi {
         // 测试请求外部url 
         String result = client.getForObject("http://jsonplaceholder.typicode.com/posts", String.class);
         
-        log.info("请求结果 ==> \n{}", result);
+        // log.info("请求结果 ==> \n{}", result);
     }
     
 }

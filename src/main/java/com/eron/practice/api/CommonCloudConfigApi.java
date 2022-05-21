@@ -3,6 +3,7 @@ package com.eron.practice.api;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.apache.zookeeper.KeeperException;
@@ -29,14 +30,20 @@ public class CommonCloudConfigApi {
 	@Resource 
 	private ZookeeperUtils zkUtils;
 
-	private static final String configPath = "/common/config";  // 设置功能前缀 
+	private final String configPath = "/common/config";  // 设置功能前缀 需要提前创建好路径
+	
+	@PostConstruct 
+	public void init() {
+		// 对于配置节点 需要提前创建好 父节点 
+		this.zkUtils.creatMutiZNode(this.configPath);
+	}
 	
 	@GetMapping(value = "config/{configName}") 
 	public BusinessResponseEntity<Object> getCurrentConfig(@PathVariable(value = "configName") String configName){
 		log.info("request CommonCloudConfigApi -> getCurrentConfig");
 		
 		try {
-			zkUtils.getDataOfZNode(configPath + "/" + configName);
+			zkUtils.getDataOfZNode(this.configPath + "/" + configName);
 		} catch (UnsupportedEncodingException | KeeperException | InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -52,13 +59,8 @@ public class CommonCloudConfigApi {
 		byte[] configData = config.getBytes(Charset.forName("UTF-8"));
 		log.info("转换成其他数据格式 => {}", configData);
 		
-		try {
-		    // 判断是否存在 节点
-		    
-			zkUtils.createZNode(configPath + "/" + configName, configData);
-		} catch (KeeperException | InterruptedException | UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		// 判断是否存在 节点
+		zkUtils.createZNodeWithData(this.configPath + "/" + configName, configData);
 		
 		return ResponseUtils.success();
 	}
@@ -69,7 +71,7 @@ public class CommonCloudConfigApi {
 		log.info("request CommonCloudConfigApi -> deleteConfig, configName -> {}", configName);
 		
 		try {
-			zkUtils.deleteZNode(configPath + "/" + configName);
+			zkUtils.deleteZNode(this.configPath + "/" + configName);
 		} catch (InterruptedException | KeeperException e) {
 			e.printStackTrace();
 		}

@@ -41,7 +41,9 @@ public class ShipTrackRecorderApi {
 	
 	@PostMapping(value = "shiptracks/{shipId}")
 	public BusinessResponseEntity<Object> addTrackToShip(@PathVariable(value = "shipId") Long shipId, @RequestBody ShipTrackPoint shipTrackPoint) {
-		ShipTrackPoint newTrackPoint = shipTrackService.addTrackPointsToShip(shipId, shipTrackPoint);
+		log.info("传播轨迹点接受到的 => {}", shipTrackPoint.toString());
+		
+	    ShipTrackPoint newTrackPoint = shipTrackService.addTrackPointsToShip(shipId, shipTrackPoint);
 		
 		return ResponseUtils.success(newTrackPoint);
 	}

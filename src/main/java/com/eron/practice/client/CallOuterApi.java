@@ -58,7 +58,7 @@ public class CallOuterApi {
         client = builder.build();
     }
     
-    @PostConstruct 
+    // @PostConstruct 
     public void test() { // 自动执行测试一下 
         // 测试请求外部url 
         String result = client.getForObject("http://jsonplaceholder.typicode.com/posts", String.class);

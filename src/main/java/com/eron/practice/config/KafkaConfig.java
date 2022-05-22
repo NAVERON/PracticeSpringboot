@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaAdmin;
 
-import com.eron.practice.service.KafkaProviderService;
+import com.eron.practice.service.serviceImpl.KafkaProviderService;
 
 /**
  * kafka 配置topic

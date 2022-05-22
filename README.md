@@ -70,7 +70,7 @@ MysqlDataTruncation: Data truncation: Data too long for column 'call_number' at 
 24. 使用`@ConfigurationProperties`注解的注意事项: 需要标注 @Component/@Configuration 注解实现注入Spring管理; 需要在类中实现getter+setter方法, 否则无法自动获取; 数字的值不能是计算公式, 只能是最总结果  
 25. Web Security的配置中，不能添加这个注解`@EnableGlobalAuthentication `, 否则会出现意想不到的炎症过程，以后有空再看原因  
 26. curl --user xxx:xxx 使用, 一些情况需要表明body是raw格式还是json格式, 比如在 api/v1/config  POST 创建新的节点请求中, 需要使用 `-H "Content-Type: text/plain"` 表示body是raw, 否则会自动添加'=',相当于把原始的字符串看作了json的key; 总结, 传入requestBody 是对象的时候需要使用json, 普通字符串使用raw格式  
-27. kafka使用过程中需要注意配置声场和消费序列化和反序列化方式, 生产端/客户端提交消息需要和消费段匹配  
+27. kafka使用过程中需要注意配置声场和消费序列化和反序列化方式, 生产端/客户端提交消息需要和消费段匹配, 使用json转换object和string的关系, 序列化问题解决, 如果需要实现特殊对象的序列化, 需要额外配置  
 
 
 

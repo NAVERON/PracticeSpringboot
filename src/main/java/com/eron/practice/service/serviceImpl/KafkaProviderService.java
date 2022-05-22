@@ -1,4 +1,4 @@
-package com.eron.practice.service;
+package com.eron.practice.service.serviceImpl;
 
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -17,6 +17,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import com.eron.practice.model.ShipTrackPoint;
+import com.eron.practice.service.ShipTrackService;
 import com.eron.practice.utils.JsonUtils;
 
 /**
@@ -77,16 +78,14 @@ public class KafkaProviderService {
         log.info("从队列中获取到轨迹点 --> {}", shipTrackPoint.toString());
         
         // 所以一般使用队列中间件的时候会在原始数据上封装一层 分层利于灵活修改
-        // shipTrackService.addTrackPointsToShip(shipTrackPoint.getShipId(), shipTrackPoint);
+        shipTrackService.addTrackPointsToShip(shipTrackPoint.getShipId(), shipTrackPoint);
     }
     
     // 监听kafka队列 groupid = 消費群id 
     @KafkaListener(groupId = "xxx", topics = "tracks") // kafka 消费端 groupud消费组概念 topic 主题
-    public void kafkaCustomeDeal(ConsumerRecords<String, String> records) { // 继承实现自定义消息结构
+    public void kafkaCustomeDeal(String track) { // 继承实现自定义消息结构
         log.info("接收tracks队列数据----------------------");
-        records.forEach((record) -> {
-            this.saveShipTrackPoint(record.value());
-        });
+        this.saveShipTrackPoint(track);
         
     }
 }

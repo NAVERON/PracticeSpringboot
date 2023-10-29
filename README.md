@@ -73,6 +73,11 @@ MysqlDataTruncation: Data truncation: Data too long for column 'call_number' at 
 27. kafka使用过程中需要注意配置声场和消费序列化和反序列化方式, 生产端/客户端提交消息需要和消费段匹配, 使用json转换object和string的关系, 序列化问题解决, 如果需要实现特殊对象的序列化, 需要额外配置  
 
 
+## 进步和新的问题
+
+1. 限流 降级措施
+2. 多实例部署问题, 分布式实现的考虑, 程序可以部署多个不影响实际功能正确
+3. nginx load balance 负载均衡实现 gateway的实现等
 
 # 技术测验  
 

@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
+import com.eron.practice.exception.CustomeGlobalException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,12 +34,15 @@ public class UserServiceImpl implements UserService {
 	@Resource 
 	// @Qualifier(value = "") 今后需要更多实现 添加qualifier 
 	private UserDAO userDAO;
+
 	@Resource 
 	private MailClientUtils mailClient;
+
 	@Resource 
 	private RedisClusterUtils redisClusterUtils;
+
 	@Resource
-	private CacheStore<User> loginUserCache;  // 缓存登录的用户对象
+	private CacheStore<User> loginUserCache;  // 缓存登录的用户对象 本地缓存， 实际项目中可以使用全局缓存 redis等
 	
 	public List<User> all() { 
 		return userDAO.findAll();
@@ -46,24 +50,25 @@ public class UserServiceImpl implements UserService {
 	
 	public User oneByID(Long id) { 
 		log.warn("service implement one method run : {}", id);
-		User user = userDAO.findById(id).orElse(null);
-		return user;
+		try {
+			return userDAO.findById(id).orElseThrow(() -> new CustomeGlobalException("no user by id"));
+		} catch (CustomeGlobalException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// 这里的用户名称设置为注册邮箱名称   ==  业务关系转换   用户名称或者邮箱均可 名称可能会重复 
-		// find by username or registmail 
-		User user = userDAO.findByUserNameOrRegistEmail(username).orElse(null);
-		
-		return user;
+		// find by username or registmail
+
+		return userDAO.findByUserNameOrRegistEmail(username).orElseGet(User::new);
 	}
 
 	public User newUser(User user) {
 		// 注册新用户  检查邮箱是否重复
 
-		User savedUser = userDAO.save(user);
-		return savedUser;
+		return userDAO.save(user);
 	}
 
 	@Override
@@ -140,13 +145,18 @@ public class UserServiceImpl implements UserService {
 			// 构造用户对象 
 			registedUser = User.createBuilder().name(userName).password(password).registEmail(registEmail).build();
 			registedUser = userDAO.save(registedUser);
-			log.info("registed User info : {}", registedUser);
+			log.info("register User info : {}", registedUser);
 		}
 		
 		return registedUser;
 
 	}
 
+	/**
+	 * 缓存应当穿插于具体的方法中, 不用单独提供方发, 逻辑层直接判断取缓存还是直接返回对象 并缓存
+	 * @param userId
+	 * @return
+	 */
 	@Override
 	public User oneByIDOfCache(Long userId) {
 		// 从cache中获取user

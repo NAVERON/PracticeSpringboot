@@ -79,9 +79,7 @@ public class JwtTokenUtils {
     public void initialAlgorithmsHS() throws IllegalArgumentException {
     	algorithmHS = Algorithm.HMAC256(this.TOKEN_SECRET);
     }
-    
-    /*********************************************************************/
-    
+	
     public Algorithm getHMAC256Algorithm() {
     	return this.algorithmHS;
     }

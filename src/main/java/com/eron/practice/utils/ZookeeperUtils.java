@@ -2,6 +2,7 @@ package com.eron.practice.utils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -86,23 +87,19 @@ public class ZookeeperUtils {
         String createresult = "";  // 初始化
 
 		try {
-			String x = new String(nodeData, "UTF-8");
+			String x = new String(nodeData, StandardCharsets.UTF_8);
 			log.info("检查是否没有变化 {}", x);
 			Stat stat = this.zkClient.exists(nodePath, false);
 			
 	        if(stat == null) {
-	        	// 肯呢个上一级节点不存在  这里简化处理， 不做多余判断 
+	        	// 可能上一级节点不存在  这里简化处理， 不做多余判断
 		        createresult = this.zkClient.create(nodePath, nodeData, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 		        log.info("create node result : {}", createresult);
 	        }
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (KeeperException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
+		} catch (KeeperException | InterruptedException e) {
 			e.printStackTrace();
 		}
-        
+
         return createresult;
     }
     
@@ -136,7 +133,7 @@ public class ZookeeperUtils {
     public String getDataOfZNode(String nodePath)
             throws KeeperException, InterruptedException, UnsupportedEncodingException {
         byte[] result = this.zkClient.getData(nodePath, true, null);
-        String resultString = new String(result, "UTF-8");
+        String resultString = new String(result, StandardCharsets.UTF_8);
 
         log.info("get data result : {}, toString {}", result, resultString);
         
@@ -200,12 +197,12 @@ public class ZookeeperUtils {
         List<String> lockerKeys = this.zkClient.getChildren(this.exclusiveLockPath, false);  // 获取锁节点下的所有节点名称 不是全路径名 
         Collections.sort(lockerKeys);
         // 获取节点名称 末尾值
-        Integer curIndex = lockerKeys.indexOf(curLock.substring(this.exclusiveLockPath.length()+1));
+        int curIndex = lockerKeys.indexOf(curLock.substring(this.exclusiveLockPath.length()+1));
         //判断当前枷锁是否是最小值 最小值枷锁成功 否则失败 
         if (curIndex == 0) {
             log.info("加锁成功");
             return LockStatusEnum.LOCK_SUCCESS;
-        } else {
+        } else {  // 这里不需要这么复杂， 结果只会有成功和失败, 所以这里可以简化处理, 除非需要堆垛个情况返回不同的枚举值
             // 判断上一个节点的状态 
             String preNode = lockerKeys.get(curIndex - 1);
             Stat stat = this.zkClient.exists(this.exclusiveLockPath + "/" + preNode, this.lockWatcher);  // 检查是否存在节点 

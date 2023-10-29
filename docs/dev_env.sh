@@ -30,7 +30,7 @@ sudo systemctl start redis-server.service
 
 
 # prod环境开发环境启动
-mysql redsi 使用systemctl start ... 启动 
+mysql redis 使用systemctl start ... 启动
 /home/ubuntu/bin/apache-zookeeper-3.6.3-bin/bin/zkServer.sh start
 /home/ubuntu/bin/kafka_2.13-2.8.0/bin/kafka-server-start.sh /home/ubuntu/bin/kafka_2.13-2.8.0/config/server.properties
 

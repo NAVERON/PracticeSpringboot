@@ -38,8 +38,7 @@ public class UserView {
 	 * 用户主页页面url  但是为了确保经过登录验证的,而不是直接输入url的, 增加token验证
 	 * @param modelAndView
 	 * @param userId  登录用户id
-	 * @param loginToken 
-	 *  为了确保登录用户是验证过的, 需要生成一个cache token 验证, 或者使用aop 每次查询是否有缓存, 限定只能在登录的时候生成cache 
+	 *  为了确保登录用户是验证过的, 需要生成一个cache token 验证, 或者使用aop 每次查询是否有缓存, 限定只能在登录的时候生成cache
 	 *  token 是缓存的key
 	 *  以后使用security框架  现在先不管了, 在缓存中添加cache 验证id是否已经缓存来判断 
 	 * @return 用户主页视图
@@ -51,7 +50,7 @@ public class UserView {
 		modelAndView.setViewName("userHome");
 		
 		// 查询缓存中是否存在  如果登陆过, 直接输入url可以直接进入用户首页 
-		User user = userService.oneByIDOfCache(userId);
+		User user = userService.oneByIDOfCache(userId);  // 查询缓存的过程可以看作查询session的过程  但是这里缺少了身份校验
 		//User user = userService.oneByID(userId);
 		if(user == null) {  // 没有缓存表示没有登录过
 			log.error("userId 没有从缓存中查询到用户, 请先登录");
@@ -72,7 +71,7 @@ public class UserView {
 	}
 	
 	@PostMapping(value = "users/{userId}/newShip")
-	public ModelAndView createShip(ModelAndView modelAndView, 
+	public ModelAndView createShip(ModelAndView modelAndView,  // 船舶对象可以优化为 body
 			@PathVariable(value = "userId") Long pathUserId,
 			@RequestParam(value = "userId") Long userId, 
 			@RequestParam(value = "name") String name, 

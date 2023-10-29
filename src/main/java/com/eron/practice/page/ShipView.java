@@ -25,7 +25,8 @@ import com.eron.practice.utils.JsonUtils;
 @Controller 
 @RequestMapping(value = "page/v1") 
 public class ShipView {
-	
+	// restful 命名的url 只适用于 资源管理型, 如果更复杂的操作就不适用了, 应当根据实际情况分类 表达接口的含义
+
 	private static final Logger log = LoggerFactory.getLogger(ShipView.class);
 	
 	@Resource 

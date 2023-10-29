@@ -26,7 +26,7 @@ public class ShipTrackServiceImpl implements ShipTrackService {
 	@Override 
 	public ShipTrackPoint addTrackPointsToShip(Long shipId, ShipTrackPoint shipTrackPoint) {
 		shipTrackPoint.setShipId(shipId);
-		log.info("存储轨迹点前的数据值 -> {}", shipTrackPoint.toString());
+		log.info("存储轨迹点前的数据值 -> {}", shipTrackPoint);
 		
 		return shipTrackPointDAO.save(shipTrackPoint);
 	}

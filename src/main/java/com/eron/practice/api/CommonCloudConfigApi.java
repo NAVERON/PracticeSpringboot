@@ -2,6 +2,7 @@ package com.eron.practice.api;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -56,7 +57,7 @@ public class CommonCloudConfigApi {
 			@RequestBody String config) {
 		log.info("request CommonCloudConfigApi -> createNewConfig, configName -> {}, config data -> {}", configName, config);
 		
-		byte[] configData = config.getBytes(Charset.forName("UTF-8"));
+		byte[] configData = config.getBytes(StandardCharsets.UTF_8);
 		log.info("转换成其他数据格式 => {}", configData);
 		
 		// 判断是否存在 节点

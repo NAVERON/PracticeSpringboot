@@ -1,6 +1,7 @@
 package com.eron.practice.utils;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -49,11 +50,9 @@ public class RedisClusterUtils {
 		String key = CommonConstant.REDIS_VERIFY_PREFIX + email;
 		String verifyCode = stringRedisTemplate.opsForValue().get(key);
 		
-		if(verifyCode.equals(checkVerifyCode)) {
+		if(Objects.nonNull(verifyCode) && verifyCode.equals(checkVerifyCode)) {
 			// 验证成功, 删除验证码
-			stringRedisTemplate.delete(key);
-			
-			return true;
+			return stringRedisTemplate.delete(key);
 		}
 		
 		return false;
@@ -78,11 +77,11 @@ public class RedisClusterUtils {
 			threadLock.set(uuid);
 			
 			isLocked = stringRedisTemplate.opsForValue().setIfAbsent(key, uuid, expiryDuration, timeUnit);
-			if(!isLocked) {
+			if(Boolean.FALSE.equals(isLocked)) {
 				// 没有加锁成功 内部循环  
 				for(;;) {
 					isLocked = stringRedisTemplate.opsForValue().setIfAbsent(key, uuid, expiryDuration, timeUnit);
-					if(isLocked || retryLockTimes.get() < 0) {
+					if(Boolean.TRUE.equals(isLocked) || retryLockTimes.get() < 0) {
 						break;
 					}
 					retryLockTimes.set(retryLockTimes.get() - 1);
@@ -92,13 +91,13 @@ public class RedisClusterUtils {
 			isLocked = true;
 		}
 		// 可重入  累积重入次数 / 加锁的次数
-		if(isLocked) {
+		if(Boolean.TRUE.equals(isLocked)) {
 			Integer count = lockTimes.get() == null ? 1 : lockTimes.get() + 1;
 			lockTimes.set(count);
 		}
 		
 		// 返回String表达更多的锁状态和额外信息 
-		return isLocked ? LockStatusEnum.LOCK_SUCCESS : LockStatusEnum.LOCK_FAIL;
+		return Boolean.TRUE.equals(isLocked) ? LockStatusEnum.LOCK_SUCCESS : LockStatusEnum.LOCK_FAIL;
 	}
 	
 	public LockStatusEnum releaseRedisLock(String key) {
@@ -107,7 +106,7 @@ public class RedisClusterUtils {
 		String uuid = threadLock.get() == null ? "" : threadLock.get(); 
 		if(uuid.equals(stringRedisTemplate.opsForValue().get(key))) {
 			// 如果是当前线程 执行解锁  没有枷锁的情况下解锁 
-			Integer count = lockTimes.get() == null ? -1 : lockTimes.get() - 1;
+			int count = lockTimes.get() == null ? -1 : lockTimes.get() - 1;
 			if(count <= 0) { 
 				// 当前线程锁全部解除  1 删除redis 2 删除threadLocal 各种临时变量 
 				stringRedisTemplate.delete(key);

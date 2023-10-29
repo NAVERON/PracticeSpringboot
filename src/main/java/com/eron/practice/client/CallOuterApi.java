@@ -24,7 +24,7 @@ public class CallOuterApi {
 
     private static final Logger log = LoggerFactory.getLogger(CallOuterApi.class);
     
-    private RestTemplate client;
+    private final RestTemplate client;
     
     /**
      * 定制化restTemplate 比如日志拦截

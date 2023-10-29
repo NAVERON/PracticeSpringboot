@@ -17,7 +17,6 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -43,27 +42,40 @@ public class JsonUtils {
 	
 	private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
-	private static Gson gson;
+	private static final class GsonHolder {
+		private static final Gson gson = new GsonBuilder()
+				.setDateFormat(DATE_FORMAT)
+				.registerTypeAdapter(LocalTime.class, new GsonLocalTimeTypeAdapter())
+				.registerTypeAdapter(Date.class, new GsonDateTypeAdapter())
+				.registerTypeAdapter(LocalDate.class, new GsonLocalDateTypeAdapter())
+				.registerTypeAdapter(LocalDateTime.class, new GsonLocalDateTimeTypeAdapter())
+				.registerTypeAdapter(ByteBuffer.class, new GsonByteBufferTypeAdapter())
+				.registerTypeAdapter(byte[].class, new GsonByteArrayTypeAdapter())
+				.disableHtmlEscaping()
+				.create();
+	}
 
-	// 经典双重锁校验  单例模式 
+	// 经典双重锁校验  单例模式
 	public static Gson getGson() {
-		if (gson == null) {
-			synchronized (JsonUtils.class) {
-				if (gson == null) {
-					gson = new GsonBuilder()
-							.setDateFormat(DATE_FORMAT)
-							.registerTypeAdapter(LocalTime.class, new GsonLocalTimeTypeAdapter())
-							.registerTypeAdapter(Date.class, new GsonDateTypeAdapter())
-							.registerTypeAdapter(LocalDate.class, new GsonLocalDateTypeAdapter())
-							.registerTypeAdapter(LocalDateTime.class, new GsonLocalDateTimeTypeAdapter())
-							.registerTypeAdapter(ByteBuffer.class, new GsonByteBufferTypeAdapter())
-							.registerTypeAdapter(byte[].class, new GsonByteArrayTypeAdapter())
-							.disableHtmlEscaping()
-							.create();
-				}
-			}
-		}
-		return gson;
+		return GsonHolder.gson;
+
+		// IDEA 建议的写法, 再研究一下原因, 比较双锁的实现好坏
+//		if (gson == null) {
+//			synchronized (JsonUtils.class) {
+//				if (gson == null) {
+//					gson = new GsonBuilder()
+//							.setDateFormat(DATE_FORMAT)
+//							.registerTypeAdapter(LocalTime.class, new GsonLocalTimeTypeAdapter())
+//							.registerTypeAdapter(Date.class, new GsonDateTypeAdapter())
+//							.registerTypeAdapter(LocalDate.class, new GsonLocalDateTypeAdapter())
+//							.registerTypeAdapter(LocalDateTime.class, new GsonLocalDateTimeTypeAdapter())
+//							.registerTypeAdapter(ByteBuffer.class, new GsonByteBufferTypeAdapter())
+//							.registerTypeAdapter(byte[].class, new GsonByteArrayTypeAdapter())
+//							.disableHtmlEscaping()
+//							.create();
+//				}
+//			}
+//		}
 	}
 	
 	// 只是简单的转换 

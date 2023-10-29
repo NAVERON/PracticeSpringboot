@@ -12,6 +12,10 @@ import com.eron.practice.model.User;
 @Configuration
 public class CacheStoreBeans {
 
+	// 本地缓存可以直接使用caffein 缓存的实现， guava 缓存也可以
+	// 实际使用时 可以不在这里做一个bean对象， 直接使用工具静态方法， 实际使用的类中初始化和使用
+	// 全局缓存则使用redis  mermaid 缓存框架
+
 	@Bean(value = "simpleStringCache")  // 或者name = "testCache" alias
 	@Lazy(value = true) 
 	public CacheStore<String> simpleStringCache() {

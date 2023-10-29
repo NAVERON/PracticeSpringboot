@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,11 +27,9 @@ import com.eron.practice.utils.ResponseUtils;
 public class UserManagerApi { 
 	// 单独请求, 不和页面的控制混合   这种的单独用在客户端吧  以后查找混合的方式 
 	private static final Logger log = LoggerFactory.getLogger(UserManagerApi.class);
-	
-	private final ThreadLocal<String> tesThreadLocal = new ThreadLocal<>();  // 多线程场景下公共变量的使用 
-	
+
 	@Resource
-	// @Qualifier // 以后如果有其他的实现, 补充空值为设定值 
+	// @Qualifier // 配合Autowired使用 以后如果有其他的实现, 补充空值为设定值
 	private UserService userService; 
 	
 	@GetMapping(value = "test")  // 测试

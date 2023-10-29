@@ -40,7 +40,7 @@ public class LoginView {
 		return modelAndView;
 	}
 	
-	@PostMapping(value = "generateRandomEmailCode") 
+	@PostMapping(value = "generateRandomEmailCode")   // 应该使用小写 -连接
 	@ResponseBody 
 	public BusinessResponseEntity<Object> generateRandomEmailCode(@RequestParam(value = "email", required = true) String emailAddress) {
 		// !!!!! 警示  post http请求中，如果后端使用requestParam 必须在url中拼接参数 
@@ -56,7 +56,8 @@ public class LoginView {
 	public ModelAndView doLogin(ModelAndView modelAndView, 
 			@RequestParam(value = "username", required = true) String username, 
 			@RequestParam(value = "password", required = true) String password) {
-		
+		// 应该对敏感信息作正则校验, 去掉恶意执行脚本等 比如sql注入
+
 		// 正确则构造user对象 
 		log.info("doLogin --> [ nusername : {}, password : {} ]", username, password);
 		
